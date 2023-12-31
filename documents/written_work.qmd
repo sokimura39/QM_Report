@@ -1,0 +1,50 @@
+---
+title: "Correlation between Cycle Hire Trips and the Terrain"
+bibliography: bio.bib
+execute: 
+  echo: false
+format: pdf
+---
+
+
+# QM Written assignment
+
+## Introduction
+
+## Literature Review
+
+Cycling behaviour is affected by a number of factors. @rodriguez2004 explored the impacts of the 
+
+## Research Question
+
+Is there a correlation between the quantity (or duration) of cycle hire trips and the slope of the physical environment?
+
+## Hypothesis
+
+
+
+
+
+## Data
+
+Transport for London (TfL) makes data for the Santander Cycle Hire Scheme publicly available. The location of docking stations is available from the TfL Unified API [@transportforlondon2023a], where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well [@transportforlondon2023], with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by Santander Cycles.
+
+LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used for extracting the elevation of docking stations.
+
+## Methodology
+
+
+
+## Results
+
+
+
+## Discussion
+
+
+
+## Conclusion
+
+
+
+

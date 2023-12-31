@@ -1,5 +1,0 @@
-# QM Written assignment
-
-
-
-
