@@ -13,17 +13,15 @@ format: pdf
 
 ## Literature Review
 
-Cycling behaviour is affected by a number of factors. @rodriguez2004 explored the impacts of the 
+Cycling behaviour is affected by a number of factors. @rodriguez2004 explored the impacts of the physical environment such as the topography and the existence of sidewalks and bike paths to modal choices, and have found that a positive slope (uphill) reduces the odds of walking or cycling.
 
 ## Research Question
 
-Is there a correlation between the quantity (or duration) of cycle hire trips and the slope of the physical environment?
+Is there a correlation between the quantity or duration of cycle hire trips and the slope of the physical environment?
 
 ## Hypothesis
 
-
-
-
+The trips involving uphill paths will be discouraged, thus leading to a smaller number of trips done by the cycle hire scheme. For the trips that do occur, the duration will be significantly longer compared to their downhill counterparts.
 
 ## Data
 
