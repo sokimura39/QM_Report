@@ -13,7 +13,7 @@ format: pdf
 
 ## Literature Review
 
-Cycling behaviour is affected by a number of factors. @rodriguez2004 explored the impacts of the physical environment such as the topography and the existence of sidewalks and bike paths to modal choices, and have found that a positive slope (uphill) reduces the odds of walking or cycling.
+Cycling behaviour is affected by a number of factors. @rodriguez2004 explored the impacts of the physical environment such as the topography and the existence of sidewalks and bike paths to modal choices, and have found that a positive slope (uphill) reduces the odds of walking or cycling. @gebhart2014 has explored how weather conditions affect the number of bikeshare trips in Washington DC, finding uncomfortable conditions including cold weather, precipitation, and high humidity reduces bikeshare usage.
 
 ## Research Question
 
@@ -27,7 +27,9 @@ The trips involving uphill paths will be discouraged, thus leading to a smaller 
 
 Transport for London (TfL) makes data for the Santander Cycle Hire Scheme publicly available. The location of docking stations is available from the TfL Unified API [@transportforlondon2023a], where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well [@transportforlondon2023], with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by Santander Cycles.
 
-LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used for extracting the elevation of docking stations.
+LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used for extracting the elevation of docking stations. 
+
+LSOA boundaries 
 
 ## Methodology
 
