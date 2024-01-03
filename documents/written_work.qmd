@@ -29,7 +29,7 @@ Transport for London (TfL) makes data for the Santander Cycle Hire Scheme public
 
 LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used for extracting the elevation of docking stations. 
 
-LSOA boundaries 
+LSOA boundaries and congestion charge boundaries used are from the London Datastore. 
 
 ## Methodology
 
