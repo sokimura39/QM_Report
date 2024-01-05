@@ -11,9 +11,15 @@ format: pdf
 
 ## Introduction
 
+The London Cycle Hire Scheme (LCHS), known as Santander Cycles, is a dock-based bike share scheme that operates in London since 2010 [@li2019], now having 800 docking stations within central London [@transportforlondon2023a]. Users can use the bikes for journeys between docking stations, allowing for casual usage of bicycles for short, high-frequency, and one-way journeys [@beecham2015; @beroud2012]. The usage data is publicly available, enabling analysis of cycling behaviour.
+
 ## Literature Review
 
-Cycling behaviour is affected by a number of factors. @rodriguez2004 explored the impacts of the physical environment such as the topography and the existence of sidewalks and bike paths to modal choices, and have found that a positive slope (uphill) reduces the odds of walking or cycling. @gebhart2014 has explored how weather conditions affect the number of bikeshare trips in Washington DC, finding uncomfortable conditions including cold weather, precipitation, and high humidity reduces bikeshare usage.
+The detailed datasets of cycle hire schemes around the world has enabled analysis for cycling behaviour from many aspects.  @gebhart2014 has explored how weather conditions affect the number of bikeshare trips in Washington DC, finding uncomfortable conditions including cold weather, precipitation, and high humidity reduces bikeshare usage.
+
+Research on the relationship between cycling behaviour and the physical environment is limited. @rodriguez2004 explored the impacts of the physical environment such as the topography and the existence of sidewalks and bike paths to modal choices, and have found that a positive slope (uphill) reduces the odds of walking or cycling. This research surveyed the students and staff at a university, which may show a different behaviour from the general public.
+
+Drawing on these two streams, this report has conducted an anlysis on the less-explored relationship between cycle hire scheme usage behaviour and the physical environment.
 
 ## Research Question
 
@@ -21,18 +27,33 @@ Is there a correlation between the quantity or duration of cycle hire trips and 
 
 ## Hypothesis
 
-The trips involving uphill paths will be discouraged, thus leading to a smaller number of trips done by the cycle hire scheme. For the trips that do occur, the duration will be significantly longer compared to their downhill counterparts.
+The trips involving uphill paths will be discouraged, thus leading to a smaller number of trips done by the cycle hire scheme.For the trips that do occur, the duration will be significantly longer compared to their downhill counterparts. Journeys made by ebikes are less disencouraged by uphills compared to classic bikes. 
 
 ## Data
 
-Transport for London (TfL) makes data for the Santander Cycle Hire Scheme publicly available. The location of docking stations is available from the TfL Unified API [@transportforlondon2023a], where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well [@transportforlondon2023], with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by Santander Cycles.
+### The London Cycle Hire Scheme
 
-LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used for extracting the elevation of docking stations. 
+Transport for London (TfL) makes data for the LCHS publicly available. The location of docking stations is available from the TfL Unified API [@transportforlondon2023a], where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well [@transportforlondon2023], with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by the LCHS.
+We have used the data for one full year from December 2022 to November 2023, which is the most recent data available from TfL. There is a total of 8,414,631 journeys taken in this period
 
-LSOA boundaries and congestion charge boundaries used are from the London Datastore. 
+### Supporting Data
+
+For the elevation data, LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used. LSOA boundaries and congestion charge boundaries used are from the London Datastore [@greaterlondonauthority2014; @greaterlondonauthority2019]. 
 
 ## Methodology
 
+### Joining and Cleaning Data
+
+Using these datasets, we have conducted a spatial join to get the elevation and the LSOA of each docking station, and classified whether the station is within the congestion charge area. This docking station dataset with the additional information is joined with the usage data, allowing us to calculate the distance, the difference in height, and the origin-destination combination for LSOAs. 
+The type of 
+
+### The impacts of height
+
+First, we will consider whether there is a correlation between the height difference travelled and the number of journeys. 
+The descriptive statistics of these will be as follows:
+
+The negative number in the difference in height indicates that downhill travel is more encouraged as a general trend. The one-sample t-test against the null hypothesis of average being 0 shows a p-value of $p<0.001$, showing this is statistically significant.
+Both conventional cycles and e-bikes have negative average height difference, although 
 
 
 ## Results
