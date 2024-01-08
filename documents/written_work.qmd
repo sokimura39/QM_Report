@@ -11,6 +11,7 @@ format: pdf
 
 ## Introduction
 
+
 The London Cycle Hire Scheme (LCHS), known as Santander Cycles, is a dock-based bike share scheme that operates in London since 2010 [@li2019], now having 800 docking stations within central London [@transportforlondon2023a]. Users can use the bikes for journeys between docking stations, allowing for casual usage of bicycles for short, high-frequency, and one-way journeys [@beecham2015; @beroud2012]. The usage data is publicly available, enabling analysis of cycling behaviour.
 
 ## Literature Review
@@ -34,7 +35,7 @@ The trips involving uphill paths will be discouraged, thus leading to a smaller 
 ### The London Cycle Hire Scheme
 
 Transport for London (TfL) makes data for the LCHS publicly available. The location of docking stations is available from the TfL Unified API [@transportforlondon2023a], where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well [@transportforlondon2023], with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by the LCHS.
-We have used the data for one full year from December 2022 to November 2023, which is the most recent data available from TfL. There is a total of 8,414,631 journeys taken in this period
+We have used the data for one full year from December 2022 to November 2023, which is the most recent data available from TfL. There is a total of 8,414,631 journeys taken in this period. This dataset will be the scope for our analysis.
 
 ### Supporting Data
 
@@ -42,19 +43,24 @@ For the elevation data, LIDAR Composite Digital Terrain Model (DTM) [@environmen
 
 ## Methodology
 
+We will try to a
+
 ### Joining and Cleaning Data
 
 Using these datasets, we have conducted a spatial join to get the elevation and the LSOA of each docking station, and classified whether the station is within the congestion charge area. This docking station dataset with the additional information is joined with the usage data, allowing us to calculate the distance, the difference in height, and the origin-destination combination for LSOAs. 
-The type of 
+The average height difference for e-bikes were -0.07 m, significantly ($p < 0.01$) lower than that of e-bikes.
 
-### The impacts of height
+### The impacts of height difference
 
 First, we will consider whether there is a correlation between the height difference travelled and the number of journeys. 
 The descriptive statistics of these will be as follows:
 
-The negative number in the difference in height indicates that downhill travel is more encouraged as a general trend. The one-sample t-test against the null hypothesis of average being 0 shows a p-value of $p<0.001$, showing this is statistically significant.
+The negative number in the difference in height indicates that downhill travel is more encouraged as a general trend. The one-sample t-test against the null hypothesis of average being 0 shows a p-value of $p < 0.001$, showing this is statistically significant.
 Both conventional cycles and e-bikes have negative average height difference, although 
 
+### The influencing factors 
+
+In order to analyse the impact of the height difference itself, other explanatory factors need to be taken into consideration. Previous 
 
 ## Results
 
