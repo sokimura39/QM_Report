@@ -43,8 +43,6 @@ For the elevation data, LIDAR Composite Digital Terrain Model (DTM) [@environmen
 
 ## Methodology
 
-We will try to a
-
 ### Joining and Cleaning Data
 
 Using these datasets, we have conducted a spatial join to get the elevation and the LSOA of each docking station, and classified whether the station is within the congestion charge area. This docking station dataset with the additional information is joined with the usage data, allowing us to calculate the distance, the difference in height, and the origin-destination combination for LSOAs. 
@@ -56,14 +54,19 @@ First, we will consider whether there is a correlation between the height differ
 The descriptive statistics of these will be as follows:
 
 The negative number in the difference in height indicates that downhill travel is more encouraged as a general trend. The one-sample t-test against the null hypothesis of average being 0 shows a p-value of $p < 0.001$, showing this is statistically significant.
-Both conventional cycles and e-bikes have negative average height difference, although 
+Both conventional cycles and e-bikes have negative average height difference, with e-bikes having less average showing 
 
-### The influencing factors 
+### Regression Model 
 
-In order to analyse the impact of the height difference itself, other explanatory factors need to be taken into consideration. Previous 
+In order to analyse the impact of the height difference, a multiple regression model is conducted to measure the impacts of this variable.
+
+
+
+
 
 ## Results
 
+The results for the simple regression model is as follows:
 
 
 ## Discussion
