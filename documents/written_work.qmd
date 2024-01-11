@@ -32,33 +32,62 @@ The trips involving uphill paths will be discouraged, thus leading to a smaller 
 
 ## Data
 
-### The London Cycle Hire Scheme
+### Data Sources
 
-Transport for London (TfL) makes data for the LCHS publicly available. The location of docking stations is available from the TfL Unified API [@transportforlondon2023a], where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well [@transportforlondon2023], with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by the LCHS.
-We have used the data for one full year from December 2022 to November 2023, which is the most recent data available from TfL. There is a total of 8,414,631 journeys taken in this period. This dataset will be the scope for our analysis.
+Transport for London (TfL) makes data for the LCHS publicly available. The location of the 800 docking stations is available from the TfL Unified API [@transportforlondon2023a], where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well [@transportforlondon2023], with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by the LCHS.
 
-### Supporting Data
+The spatial data is joined by the physical attributes from other resources to extract the required information. LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used for extracting elevation. Statistical boundaries and congestion charge boundaries used are from the London Datastore [@greaterlondonauthority2014; @greaterlondonauthority2019].
 
-For the elevation data, LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used. LSOA boundaries and congestion charge boundaries used are from the London Datastore [@greaterlondonauthority2014; @greaterlondonauthority2019]. 
+Accessibility by other public transport modes also impact the usage of bicycle hire schemes [@gebhart2014]. In London, the accessibility by public transport (buses, rail, tube, and tram) is evaluated by an Access Index assigned to each 100 m grid within the Greater London area, which is then categorised into Public Transport Accessibility Levels (PTAL) [@transportforlondon2015a]. We will use the Access Index published by @transportforlondon2015 for each docking station.
+
+### Summary of data
+
+The scope of analysis is the journeys taken on the LCHS from December 2022 to November 2023, the most recent one-year period where data is available. There is a total of 8,414,631 journeys taken during this period, of which .
+
+The summary of the data is shown as follows.
+
+| Statistics | Classic Cycles | E-cycles | Total |
+|===|---|---|---|
+| Number of Trips | 7,808,234 | 606,397 | 8,414,631 |
+| Mean Travelled Distance [m] | 2279.41 | 3124.62 | 2340.32 |
+| Mean Height Difference [m] | -0.23 | -0.07 | -0.22 |
+
+: **Table 1**: Characteristics of journeys made by the LCHS 
+
+As a whole, the average height difference between the origin and destination is -0.22 metres, a slight negative value indicating downhill travel is slightly preferred over their uphill counterparts. Different behaviour can be observed for the classic cycles and e-cycles in terms of distance and height difference. Longer distance and the smaller difference in height infer e-cycles allows journeys more physically demanding to the cyclists. From this comparison between the classic cycles and e-cycles, we believe that the physical intensity of cycling may have a correlation on the journeys taken on the LCHS.
+
+There are many factors that influence the choice of travel mode, and we cannot immediately conclude the height difference is the decisive factor. This report will attempt to identify the effect of the height difference on the journeys. From this point, our focus will be on journeys made by classic cycles.
+
+### Spatial Distribution of Cycling Behaviour
+
+The spatial characteristics (although not the main focus of this report) is an important aspect of cycling behaviour. We will define Central London as the congestion charge zone [@transportforlondon] which is roughly the area within the Ring Road. The following table shows the characteristics of journeys, classified by their relation to the Central London area.
+
+| Origin: | Outside || Inside ||
+| Destination: | Outside | Inside | Outside | Inside |
+|===|---|---|---|---|
+| Number of Trips | 3,788,352	| 1,432,552 | 1,265,977 | 1,927,750 |
+| Mean Travelled Distance [m] | 1972.20 | 3290.51 | 3294.99 | 1730.68 |
+| Mean Height Difference [m] | -0.17 | -0.04 | -0.73 | -0.11 |
+
+: Number of Journeys made by all cycles in relation with the Congestion Charge Zone
+
+Comparing the journeys that start outside the central area and finish within the central area (hereinafter inbound journeys) to the ones originating at the center and terminating outside (outbound journeys), there are less outbound journeys indicating cycling is not chosen as the mode of transport, despite the fact that outbound journeys tend to be more downhill (larger difference in mean height difference.)
+Although the reason behind this is unknown and out of the scope of this research (one brave assumption may be that commuters do not wish to engage in cycling after their working hours), this is one parameter we must consider in further analysis.
 
 ## Methodology
 
-### Joining and Cleaning Data
+### Summarizing the data into Origin-Destination pairs
 
-Using these datasets, we have conducted a spatial join to get the elevation and the LSOA of each docking station, and classified whether the station is within the congestion charge area. This docking station dataset with the additional information is joined with the usage data, allowing us to calculate the distance, the difference in height, and the origin-destination combination for LSOAs. 
-The average height difference for e-bikes were -0.07 m, significantly ($p < 0.01$) lower than that of e-bikes.
+In order to conduct a quantitative analysis on the amount of journeys taken by cyclists, we will summarise the data by grouping them according to their origin and destination. We have first grouped the journeys by origin and destination by docking stations, then regrouping them based on MSOA of their origin and destination. 
+
 
 ### The impacts of height difference
 
 First, we will consider whether there is a correlation between the height difference travelled and the number of journeys. 
-The descriptive statistics of these will be as follows:
 
-The negative number in the difference in height indicates that downhill travel is more encouraged as a general trend. The one-sample t-test against the null hypothesis of average being 0 shows a p-value of $p < 0.001$, showing this is statistically significant.
-Both conventional cycles and e-bikes have negative average height difference, with e-bikes having less average showing 
+### Other factors to consider
 
-### Regression Model 
-
-In order to analyse the impact of the height difference, a multiple regression model is conducted to measure the impacts of this variable.
+In order to analyse the impact of the height difference, a multiple regression model is conducted to differentiate the impacts of height difference from other explanatory variables. 
 
 
 
