@@ -78,24 +78,40 @@ Although the reason behind this is unknown and out of the scope of this research
 
 ### Summarizing the data into Origin-Destination pairs
 
-In order to conduct a quantitative analysis on the amount of journeys taken by cyclists, we will summarise the data by grouping them according to their origin and destination. We have first grouped the journeys by origin and destination by docking stations, then regrouping them based on MSOA of their origin and destination. 
+In order to conduct a quantitative analysis on the amount of journeys taken by cyclists, we will summarise the data by grouping them according to their origin and destination. For this analysis, MSOAs will be used as the unit of analysis.  We have first grouped the journeys by origin and destination by docking stations, then regrouping them based on MSOA of their origin and destination. 
+There are 160 MSOAs where at least one docking station exists, therefore the summarised dataset includes 25,600 rows of data. By removing journeys that start and finish within the same MSOA, we have 25,440 rows of data for analysis.
 
+#### Subsetting dataset for initial analysis
 
-### The impacts of height difference
+Considering the whole origin-destination matrix will include various factors unidentified, thus we will first conduct the analysis on a subset of the dataset. We will extract the journeys involving specific MSOAs as a starting point, and conduct an analysis on the subset. The results acquired will be applied to the whole matrix afterwards for further analysis.
+Two subsets were created for this first analysis: journeys involving the City of London (code: E02000001) at the center of the city, and involving the MSOA of Primrose Hill (E02000183) in the Borough of Camden outside the cental zone.
 
-First, we will consider whether there is a correlation between the height difference travelled and the number of journeys. 
+### Explanatory factors
 
-### Other factors to consider
+In order to analyse the impact of the height difference, a multiple regression model is conducted to differentiate the impacts of height difference from other explanatory variables. Other potential explanatory variables are the distance, population density, access to public transport (Access Index), the number of ports per station, and whether the area is within the central zone. 
+When considering the subset using one MSOA as the origin or destination, characteristics for the other end of the journey was stored for regression. Upon analysis for the whole dataset, the characteristics for origin and destination were both used to consider the impact.
 
-In order to analyse the impact of the height difference, a multiple regression model is conducted to differentiate the impacts of height difference from other explanatory variables. 
+#### Analysis of variables
 
+The scatter plots for each of the potential explanatory variables are shown as follows.
 
+Based on the scatter plot, the distance may have a power law correlation with the number of journeys. A linear regression on log-log scale returns a coefficient of -2.3, indicating the inverse squared value of distance may have a better correlation with the number of journeys taken. Assuming other variables have a linear correlation (if any at all), the following model will be used for further analysis.
+
+$$
+y = \frac{\beta_{\text{dist}}}{(x_{\text{dist}})^2} + \sum_i{\beta_ix_i}
+$$
+
+- $x_{\text{dist}}$: distance of journey
+- $x_i$: other explanatory variables
+- $\beta$: coefficients
 
 
 
 ## Results
 
-The results for the simple regression model is as follows:
+### Analysis of subset
+
+
 
 
 ## Discussion
