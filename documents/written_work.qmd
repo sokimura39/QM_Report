@@ -1,9 +1,28 @@
 ---
-title: "Correlation between Cycle Hire Trips and the Terrain"
+title: Correlation between Cycle Hire Trips and the Terrain
 bibliography: bio.bib
+csl: harvard-cite-them-right.csl
 execute: 
   echo: false
-format: pdf
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \addtokomafont{disposition}{\rmfamily}
+    mainfont: Spectral
+    sansfont: Roboto
+    monofont: JetBrainsMono-Regular
+    papersize: a4
+    geometry:
+      - top=25mm
+      - left=40mm
+      - right=30mm
+      - bottom=25mm
+      - heightrounded
+    toc: false
+    number-sections: false
+    colorlinks: true
+    highlight-style: github    
 ---
 
 
@@ -15,7 +34,7 @@ The London Cycle Hire Scheme (LCHS), widely known as the Santander Cycles, is a 
 
 ## Literature Review
 
-The detailed datasets of cycle hire schemes around the world has enabled analysis for cycling behaviour from many aspects.  @gebhart2014 has explored how weather conditions affect the number of bikeshare trips in Washington DC, finding uncomfortable conditions including cold weather, precipitation, and high humidity reduces bikeshare usage.
+The detailed datasets of cycle hire schemes around the world has enabled analysis for cycling behaviour from many aspects. @gebhart2014 has explored how weather conditions affect the number of bikeshare trips in Washington DC, finding uncomfortable conditions including cold weather, precipitation, and high humidity reduces bikeshare usage.
 
 Research on the relationship between cycling behaviour and the physical environment is limited. @rodriguez2004 explored the impacts of the physical environment such as the topography and the existence of sidewalks and bike paths to modal choices, and have found that a positive slope (uphill) reduces the odds of walking or cycling. This research surveyed the students and staff at a university, which may show a different behaviour from the general public.
 
@@ -111,7 +130,7 @@ $$
 - $x_i$: other explanatory variables
 - $\beta$: coefficients
 
-By storing the inverse squared value of distance (km^2^) in the `distance_inv_sq` variable, the linear regression model will consist of the following dependent variables.
+By storing the inverse squared value of distance (/km^2^) in the `distance_inv_sq` variable, the linear regression model will consist of the following dependent variables.
 
 | Criteria | Variables (subset analysis) | Variables (whole dataset analysis) |
 |===|---|---|
@@ -129,6 +148,8 @@ By storing the inverse squared value of distance (km^2^) in the `distance_inv_sq
 
 ### Analysis of subset
 
+#### Subset 1: City of London
+
 We will first consider the analysis on the journeys to and from the City of London.
 
 The correlation matrix for each dependent variable and the independent variable are shown in the figure below.
@@ -136,21 +157,71 @@ The correlation matrix for each dependent variable and the independent variable 
 All coefficients are below 0.8, indicating there is no multicollinearity between dependent variables. The variance inflation factors for each variable do not exceed the threshold of 5, justifying all variables for linear regression. The results of the regression model is as follows:
 
 | Variable | Coefficient | Standard Error | $t$ | $P > |t|$ |
-|===|---|---|---|---|
-| Constant | -3323.50 | 716.689 | -4.637 | 0.000 |
-| `distance_inv_sq` | 22646.6 | 2047.351 | 11.061 | 0.000 |
-| `height_diff` | 0.7890 | 20.106 | 0.039 | 0.969 |
-| `other_stations` | 553.0692 | 55.627 | 9.943 | 0.000 |
-| `other_AI2015` | 34.8973 | 11.462 | 3.045 | 0.003 |
-| `other_pop` | 0.0290 | 0.065 | 0.446 | 0.656 |
-| `is_outbound` | 291.4769 | 362.037 | 0.805 | 0.421 |
+|:===|---:|---:|---:|---:|
+| Constant | -2422.6827 | 745.016 | -3.252 | 0.001 |
+| `distance_inv_sq` | 23128.98 | 2094.249 | 11.044 | 0.000 |
+| `height_diff` | 0.7890 | 20.102 | 0.039 | 0.969 |
+| `other_stations` | 542.9293 | 60.293 | 9.005 | 0.000 |
+| `other_AI2015` | 35.3196 | 11.515 | 3.067 | 0.002 |
+| `other_pop` | -0.0210 | 0.039 | -0.546 | 0.586 |
+| `is_outbound` | -291.4769 | 361.979 | -0.805 | 0.421 |
 
-: Coefficient table for linear regression model
+: Coefficient table for linear regression model for journeys to/from City of London
 
 The adjusted R-squared value of this regression model is $R^2 = 0.623$. 
+The distance, the number of stations in area, the accessibility by public transport are the significant factors that impact the number of journeys taken. On the other hand, the height difference, the population density, and the direction is insignificant.
 
-The distance, the number of stations in area, the accessibility by public transport are the significant factors that impact the number of journeys taken.
+#### Subset 2: Primrose Hill, Camden
 
+The MSOA of Primrose Hill is a residential district located just north of Regent's Park, and is at the northern edge of the area covered by LCHS. This was chosen as an example of an area outside the center area to contrast with the above example of the City of London. The correlation matrix for journeys to/from this area is shown below.
+
+There is a high negative correlation between the direction of travel and the height difference, due to the high elevation of this area. The `is_outbound` variable indicating direction was removed during the VIF analysis. The results of the regression model for this area is shown as follows.
+
+| Variable | Coefficient | Standard Error | $t$ | $P > |t|$ |
+|:===|---:|---:|---:|---:|
+| Constant | -76.7718 | 42.219 | -1.818 | 0.070 |
+| `distance_inv_sq` | 425.2467 | 49.771 | 8.544 | 0.000 |
+| `height_diff` | -0.1126 | 0.523 | -0.215 | 0.830 |
+| `other_stations` | 22.6144 | 3.068 | 7.371 | 0.000 |
+| `other_AI2015` | 2.001 | 0.671 | 2.983 | 0.003 |
+| `other_pop` | -0.0017 | 0.002 | -0.760 | 0.448 |
+
+: Coefficient table for linear regression model for journeys to/from Primrose Hill, Camden
+
+The adjusted R-squared value is $R^2 = 0.440$, smaller than that for the City of London. The significance of variables show a similar pattern, with the distance, number of stations in an area, and the accessibility by public transport being significant, while the height difference and population density being insignificant.
+
+#### Checking the assumptions of linear regression
+
+The residual vs fitted plot and the histogram of residuals are shown below for both areas.
+
+Overall, the normal distribution of errors and the homoscedasticity assumption are met, with the exception of a few outliers that have higher values than predicted. We can conclude that the linear regression model is a legitimate model that partially explains the cycling behaviour.
+
+### Analysis of the dataset as a whole
+
+We have extracted 2 areas as the focus for the linear regression model, and have seen that the factors explained have some explanatory power when applied to journeys involving particular areas. We will now apply this to the original dataset as a whole.
+
+The correlation matrix is shown as follows:
+
+
+
+There is a collinearity between the number of stations per area, the accessibility by public transport, and whether the docks are in the central area, although this is below the threshold of 5 for a VIF analysis. The results of the regression model is as follows:
+
+| Variable | Coefficient | Standard Error | $t$ | $P > |t|$ |
+|:===|---:|---:|---:|---:|
+|Constant|-482.8715|30.011|-16.090|0.000|
+|`distance_inv_sq`|817.9024|16.343|50.046|0.000|
+|`height_diff`|-0.4716|0.422|-1.119|0.263|
+|`start_stations`|61.4233|1.621|37.884|0.000|
+|`end_stations`|66.8177|1.621|41.211|0.000|
+|`start_AI2015`|1.0362|0.353|2.933|0.003|
+|`end_AI2015`|1.0950|0.353|3.100|0.002|
+|`start_pop_density`|-0.0009|0.001|-0.831|0.406|
+|`end_pop_density`|-0.0020|0.001|-1.866|0.062|
+|`start_cc_zone`|21.5298|23.612|0.912|0.362|
+|`end_cc_zone`|22.7766|23.612|0.965|0.335|
+
+
+The adjusted R-squared value is $R^2 = 0.283$ showing that 28.3 % of the difference can be explained through these factors. The significant variables are the distance, number of stations and the accessibility to public transport, which is linear with the subsets observed. The difference in height, along with the population density and the relationship with the central zone is not a significant factor.
 
 ## Discussion
 
