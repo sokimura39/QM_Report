@@ -11,8 +11,7 @@ format: pdf
 
 ## Introduction
 
-
-The London Cycle Hire Scheme (LCHS), known as Santander Cycles, is a dock-based bike share scheme that operates in London since 2010 [@li2019], now having 800 docking stations within central London [@transportforlondon2023a]. Users can use the bikes for journeys between docking stations, allowing for casual usage of bicycles for short, high-frequency, and one-way journeys [@beecham2015; @beroud2012]. The usage data is publicly available, enabling analysis of cycling behaviour.
+The London Cycle Hire Scheme (LCHS), widely known as the Santander Cycles, is a dock-based bike share scheme that operates in London since 2010 [@li2019], now having 800 docking stations within central London [@transportforlondon2023a]. Users can use the bikes for journeys between docking stations, allowing for casual usage of bicycles for short, high-frequency, and one-way journeys [@beecham2015; @beroud2012]. The usage data is publicly available, enabling analysis of cycling behaviour.
 
 ## Literature Review
 
@@ -88,14 +87,21 @@ Two subsets were created for this first analysis: journeys involving the City of
 
 ### Explanatory factors
 
-In order to analyse the impact of the height difference, a multiple regression model is conducted to differentiate the impacts of height difference from other explanatory variables. Other potential explanatory variables are the distance, population density, access to public transport (Access Index), the number of ports per station, and whether the area is within the central zone. 
-When considering the subset using one MSOA as the origin or destination, characteristics for the other end of the journey was stored for regression. Upon analysis for the whole dataset, the characteristics for origin and destination were both used to consider the impact.
+In order to analyse the impact of the height difference, a multiple regression model is conducted to differentiate the impacts of height difference from other explanatory variables. Other potential explanatory variables are listed as follows:
+
+- distance of journey
+- population density
+- access to public transport
+- number of ports in MSOA
+- direction of journey
+
+When considering the subset using one MSOA as the origin or destination, characteristics for the other end of the journey was stored for regression. Upon analysis for the whole dataset, the characteristics for origin and destination were both used to consider the impact. The direction of journey for the whole dataset will be represented by the ratio of stations within the central zone, due to the fact that some MSOAs stretch through the borders of the central zone defined. 
 
 #### Analysis of variables
 
 The scatter plots for each of the potential explanatory variables are shown as follows.
 
-Based on the scatter plot, the distance may have a power law correlation with the number of journeys. A linear regression on log-log scale returns a coefficient of -2.3, indicating the inverse squared value of distance may have a better correlation with the number of journeys taken. Assuming other variables have a linear correlation (if any at all), the following model will be used for further analysis.
+The scatter plot suggests the distance may have a power law correlation with the number of journeys. A linear regression on log-log scale returns a coefficient of -2.3, indicating the inverse squared value of distance may have a better correlation with the number of journeys. Assuming other variables have a linear correlation (if any at all), the following model will be used for further analysis.
 
 $$
 y = \frac{\beta_{\text{dist}}}{(x_{\text{dist}})^2} + \sum_i{\beta_ix_i}
@@ -105,13 +111,45 @@ $$
 - $x_i$: other explanatory variables
 - $\beta$: coefficients
 
+By storing the inverse squared value of distance (km^2^) in the `distance_inv_sq` variable, the linear regression model will consist of the following dependent variables.
 
+| Criteria | Variables (subset analysis) | Variables (whole dataset analysis) |
+|===|---|---|
+| independent variable (number of journeys) | `Number` ||
+| distance of journey | `distance_inv_sq` ||
+| population density | `other_pop` | `start_pop` `end_pop` |
+| access to public transport (Access Index) | `other_AI2015 ` | `start_AI2015` `end_AI2015` |
+| number of stations in MSOA | `other_stations` | `start_stations` `end_stations` |
+| ratio of stations within central zone | - | `start_cc_zone` | `end_cc_zone` |
+| direction of journey | `is_outbound` | - |
+
+: Variables for linear regression analysis
 
 ## Results
 
 ### Analysis of subset
 
+We will first consider the analysis on the journeys to and from the City of London.
 
+The correlation matrix for each dependent variable and the independent variable are shown in the figure below.
+
+All coefficients are below 0.8, indicating there is no multicollinearity between dependent variables. The variance inflation factors for each variable do not exceed the threshold of 5, justifying all variables for linear regression. The results of the regression model is as follows:
+
+| Variable | Coefficient | Standard Error | $t$ | $P > |t|$ |
+|===|---|---|---|---|
+| Constant | -3323.50 | 716.689 | -4.637 | 0.000 |
+| `distance_inv_sq` | 22646.6 | 2047.351 | 11.061 | 0.000 |
+| `height_diff` | 0.7890 | 20.106 | 0.039 | 0.969 |
+| `other_stations` | 553.0692 | 55.627 | 9.943 | 0.000 |
+| `other_AI2015` | 34.8973 | 11.462 | 3.045 | 0.003 |
+| `other_pop` | 0.0290 | 0.065 | 0.446 | 0.656 |
+| `is_outbound` | 291.4769 | 362.037 | 0.805 | 0.421 |
+
+: Coefficient table for linear regression model
+
+The adjusted R-squared value of this regression model is $R^2 = 0.623$. 
+
+The distance, the number of stations in area, the accessibility by public transport are the significant factors that impact the number of journeys taken.
 
 
 ## Discussion
