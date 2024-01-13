@@ -25,18 +25,19 @@ format:
     highlight-style: github    
 ---
 
-
 # QM Written assignment
 
 ## Introduction
 
-The London Cycle Hire Scheme (LCHS), widely known as the Santander Cycles, is a dock-based bike share scheme that operates in London since 2010 [@li2019], now having 800 docking stations within central London [@transportforlondon2023a]. Users can use the bikes for journeys between docking stations, allowing for casual usage of bicycles for short, high-frequency, and one-way journeys [@beecham2015; @beroud2012]. The usage data is publicly available, enabling analysis of cycling behaviour.
+Cycle hire schemes are spreading rapidly in cities in the 21st century. This has greatly impacted the transport system in cities, by increasing the share of cycling and public transport usage, lowering greenhouse gas emmisions, and improving public health [@demaio2009]. Since the first implication of the cycle hire scheme in Amsterdam in the 1960s, the system has seen technological and methodological improvements over time. The modern system equipped with electronic self-serve docking stations and integration with technology has enabled users to use cycles between different stations, allowing for casual usages for short, high-frequency and one-way journeys[@beecham2015; @beroud2012].
+
+The London Cycle Hire Scheme (LCHS), widely known as the Santander Cycles, is one of these systems. In service since 2010 [@li2019], it has 800 docking stations within central London [@transportforlondon2023a]. Users are charged on a timed basis for one-time usage, or can opt into memberships allowing unlimited rides up to 60 minutes at a time [@transportforlondonb]. 
 
 ## Literature Review
 
-The detailed datasets of cycle hire schemes around the world has enabled analysis for cycling behaviour from many aspects. @gebhart2014 has explored how weather conditions affect the number of bikeshare trips in Washington DC, finding uncomfortable conditions including cold weather, precipitation, and high humidity reduces bikeshare usage.
+The detailed datasets of cycle hire schemes such as LCHS around the world has enabled analysis for cycling behaviour from many aspects. @gebhart2014 has explored how weather conditions affect the number of bikeshare trips in Washington DC, finding uncomfortable conditions including cold weather, precipitation, and high humidity reduces bikeshare usage. @wood2011 explored the visualisation of journeys taken by the LCHS, illustrating two major patterns of usage: leisure usage often seen near Royal Parks and commuting to and from major train stations in peak hours.
 
-Research on the relationship between cycling behaviour and the physical environment is limited. @rodriguez2004 explored the impacts of the physical environment such as the topography and the existence of sidewalks and bike paths to modal choices, and have found that a positive slope (uphill) reduces the odds of walking or cycling. This research surveyed the students and staff at a university, which may show a different behaviour from the general public.
+Meanwhile, research on the relationship between cycling behaviour and the physical environment is limited. @rodriguez2004 explored the impacts of the physical environment such as the topography and the existence of sidewalks and bike paths to modal choices, and have found that a positive slope (uphill) reduces the odds of walking or cycling. This research surveyed the students and staff at a university, which may show a different behaviour from the general public.
 
 Drawing on these two streams, this report has conducted an anlysis on the less-explored relationship between cycle hire scheme usage behaviour and the physical environment.
 
@@ -46,7 +47,7 @@ Is there a correlation between the quantity or duration of cycle hire trips and 
 
 ## Hypothesis
 
-The trips involving uphill paths will be discouraged, thus leading to a smaller number of trips done by the cycle hire scheme.For the trips that do occur, the duration will be significantly longer compared to their downhill counterparts. Journeys made by ebikes are less disencouraged by uphills compared to classic bikes. 
+The trips involving uphill paths will be discouraged, thus leading to a smaller number of trips done by the cycle hire scheme.
 
 ## Data
 
@@ -87,7 +88,7 @@ The spatial characteristics (although not the main focus of this report) is an i
 | Mean Travelled Distance [m] | 1972.20 | 3290.51 | 3294.99 | 1730.68 |
 | Mean Height Difference [m] | -0.17 | -0.04 | -0.73 | -0.11 |
 
-: Number of Journeys made by all cycles in relation with the Congestion Charge Zone
+: **Table 2**: Number of Journeys made by all cycles in relation with the Congestion Charge Zone
 
 Comparing the journeys that start outside the central area and finish within the central area (hereinafter inbound journeys) to the ones originating at the center and terminating outside (outbound journeys), there are less outbound journeys indicating cycling is not chosen as the mode of transport, despite the fact that outbound journeys tend to be more downhill (larger difference in mean height difference.)
 Although the reason behind this is unknown and out of the scope of this research (one brave assumption may be that commuters do not wish to engage in cycling after their working hours), this is one parameter we must consider in further analysis.
@@ -220,15 +221,20 @@ There is a collinearity between the number of stations per area, the accessibili
 |`start_cc_zone`|21.5298|23.612|0.912|0.362|
 |`end_cc_zone`|22.7766|23.612|0.965|0.335|
 
-
 The adjusted R-squared value is $R^2 = 0.283$ showing that 28.3 % of the difference can be explained through these factors. The significant variables are the distance, number of stations and the accessibility to public transport, which is linear with the subsets observed. The difference in height, along with the population density and the relationship with the central zone is not a significant factor.
 
 ## Discussion
 
+The regression model we have considered has successfully defined several factors that influence the number of cycle hire journeys between MSOAs: the distance, the number of stations, and the accessibility to public transport. Meanwhile, the population density, location, and height difference were not statistically significant, although it is worth noting the population density of the end points had lower P-value compared to that of origin.
 
+When applied to the spatial subset of the dataset, our regression model had a larger R-squared value, indicating that impacts individual characteristics of the areas must be investigated further. Potential areas of exploration not addressed in this report include user analysis, purpose of travel, time of day, usage of public transport, and other socioeconomic factors of the area. From the perspective of the service provided, the availability of cycles and vacant ports may also influence usage.
+
+In all cases, we could not find a significant correlation between the difference of the height and the quantity of travel, although the average difference indicated an overall preference to downhill travel. One reason may be that the simple difference of elevation between end points is not representing the uphill slope that impacts the choice of travel. An ideal conceptual approach is to consider the uphill and downhill segments appearing en route, but further consideration is needed for the methodology and feasibility. A second approach, with focus to the choice of docking stations within local areas, is to consider the relative elevation to neighbouring docking stations in relationship with its usage. Meanwhile, there is also the possibility that elevation is not a decisive factor to the frequency, and a result of other influencing variables.
 
 ## Conclusion
 
+In this research, we have created a dataset of journeys taken by the LCHS, with added information on the elevation and accessibility to public transport for origins and destinations of each journey. Although the summary statistics seem to indicate some relationship, we could not find a statistically significant influence of elevation difference to the number of journeys taken between points. The field of studying cycling behaviour through cycle hire data is growing rapidly [@beecham2015], and further research is expected for the better understanding of the effect of the physical environment on cycle hire flows.
 
+## Reference
 
 
