@@ -47,7 +47,9 @@ Is there a correlation between the quantity or duration of cycle hire trips and 
 
 ## Hypothesis
 
-The trips involving uphill paths will be discouraged, thus leading to a smaller number of trips done by the cycle hire scheme.
+There will be less journeys involving uphill routes. This will be measured from two perspectives:
+1. Docking stations located in lower elevations have more arriving journeys than departures, while stations with high elevation being the opposite.
+2. There will be a smaller number of trips for origin-destination pairs requiring uphill travel.
 
 ## Data
 
@@ -57,13 +59,11 @@ Transport for London (TfL) makes data for the LCHS publicly available. The locat
 
 The spatial data is joined by the physical attributes from other resources to extract the required information. LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used for extracting elevation. Statistical boundaries and congestion charge boundaries used are from the London Datastore [@greaterlondonauthority2014; @greaterlondonauthority2019].
 
-Accessibility by other public transport modes also impact the usage of bicycle hire schemes [@gebhart2014]. In London, the accessibility by public transport (buses, rail, tube, and tram) is evaluated by an Access Index assigned to each 100 m grid within the Greater London area, which is then categorised into Public Transport Accessibility Levels (PTAL) [@transportforlondon2015a]. We will use the Access Index published by @transportforlondon2015 for each docking station.
+Accessibility by other public transport modes also impact the usage of bicycle hire schemes [@gebhart2014]. In London, the accessibility by public transport (buses, rail, tube, and tram) is evaluated by an Access Index, which is then categorised into Public Transport Accessibility Levels (PTAL) [@transportforlondon2015a]. We will use the Access Index published by @transportforlondon2015 and assign to each docking station.
 
 ### Summary of data
 
-The scope of analysis is the journeys taken on the LCHS from December 2022 to November 2023, the most recent one-year period where data is available. There is a total of 8,414,631 journeys taken during this period, of which .
-
-The summary of the data is shown as follows.
+The scope of analysis is the journeys taken on the LCHS from December 2022 to November 2023, the most recent one-year period where data is available. There is a total of 8,414,631 journeys taken during this period. The summary of the data is shown as follows.
 
 | Statistics | Classic Cycles | E-cycles | Total |
 |===|---|---|---|
@@ -73,7 +73,9 @@ The summary of the data is shown as follows.
 
 : **Table 1**: Characteristics of journeys made by the LCHS 
 
-As a whole, the average height difference between the origin and destination is -0.22 metres, a slight negative value indicating downhill travel is slightly preferred over their uphill counterparts. Different behaviour can be observed for the classic cycles and e-cycles in terms of distance and height difference. Longer distance and the smaller difference in height infer e-cycles allows journeys more physically demanding to the cyclists. From this comparison between the classic cycles and e-cycles, we believe that the physical intensity of cycling may have a correlation on the journeys taken on the LCHS.
+As a whole, the average height difference between the origin and destination is -0.22 metres, a slight negative value indicating downhill travel is slightly preferred over their uphill counterparts. A one-sample t-test shows this value is significant compared to the expected mean of 0.
+
+Different behaviour can be observed for the classic cycles and e-cycles in terms of distance and height difference. Longer distance and the smaller difference in height infer e-cycles allows journeys more physically demanding to the cyclists. From this comparison between the classic cycles and e-cycles, we believe that the physical intensity of cycling may have a correlation on the journeys taken on the LCHS.
 
 There are many factors that influence the choice of travel mode, and we cannot immediately conclude the height difference is the decisive factor. This report will attempt to identify the effect of the height difference on the journeys. From this point, our focus will be on journeys made by classic cycles.
 
@@ -91,13 +93,17 @@ The spatial characteristics (although not the main focus of this report) is an i
 : **Table 2**: Number of Journeys made by all cycles in relation with the Congestion Charge Zone
 
 Comparing the journeys that start outside the central area and finish within the central area (hereinafter inbound journeys) to the ones originating at the center and terminating outside (outbound journeys), there are less outbound journeys indicating cycling is not chosen as the mode of transport, despite the fact that outbound journeys tend to be more downhill (larger difference in mean height difference.)
-Although the reason behind this is unknown and out of the scope of this research (one brave assumption may be that commuters do not wish to engage in cycling after their working hours), this is one parameter we must consider in further analysis.
+Although the reason behind this is unknown and out of the scope of this research (one brave assumption may be that commuters do not wish to engage in cycling after their working hours), this is one parameter we must consider.
 
 ## Methodology
 
+### Analyse the usage of individual docks
+
+First, we will focus on the usage of individual docks to test the first hypothesis. The number of journeys that originated and terminated at each docking station will be counted, and the ratio of departing journeys compared to the arriving journeys (hereinafter "DA ratio") will be calculated as our target variable. This will be compared to the elevation and other characteristics of the station in a regression model. The other dependent variables are the number of ports per station, whether the station is within the central zone, the TfL access index, and the population density of MSOA the station is located within.
+
 ### Summarizing the data into Origin-Destination pairs
 
-In order to conduct a quantitative analysis on the amount of journeys taken by cyclists, we will summarise the data by grouping them according to their origin and destination. For this analysis, MSOAs will be used as the unit of analysis.  We have first grouped the journeys by origin and destination by docking stations, then regrouping them based on MSOA of their origin and destination. 
+In order to conduct a quantitative analysis on the amount of journeys taken by cyclists, we will summarise the data by grouping them according to their origin and destination. For this analysis, MSOAs will be used as the unit of analysis in order to reduce the size of the matrix. 
 There are 160 MSOAs where at least one docking station exists, therefore the summarised dataset includes 25,600 rows of data. By removing journeys that start and finish within the same MSOA, we have 25,440 rows of data for analysis.
 
 #### Subsetting dataset for initial analysis
@@ -109,9 +115,9 @@ Two subsets were created for this first analysis: journeys involving the City of
 
 In order to analyse the impact of the height difference, a multiple regression model is conducted to differentiate the impacts of height difference from other explanatory variables. Other potential explanatory variables are listed as follows:
 
-- distance of journey
-- population density
-- access to public transport
+- distance of journey (average distance between docking stations)
+- population density of MSOA
+- access to public transport (average Access Index value of stations)
 - number of ports in MSOA
 - direction of journey
 
@@ -147,12 +153,38 @@ By storing the inverse squared value of distance (/km^2^) in the `distance_inv_s
 
 ## Results
 
+### Analysis of Individual Points
+
+The relationship between the elevation and the number of departures, arrivals, and the ratio are shown in the figure below. The DA ratio has a linear correlation with the elevation, and is statistically significant explaining 11.0 % of the variance in the DA ratio.
+
+![Relationship between elevation and docking station usage]()
+
+Now, we will consider the multiple linear regression for the DA ratio. The Pearson's correlation matrix below shows no sign of multicollinearity, and some linear correlation between the independent variable and the dependent variables. 
+
+![Pearson's correlation matrix for DA ratio analysis]()
+
+The results of the regression model is as follows.
+
+| Variable | Coefficient | Standard Error | $t$ | $P > |t|$ |
+|:===|---:|---:|---:|---:|
+| Constant | 0.9246 | 0.018 | 52.034 | 0.000 |
+| `Height` | 0.0049 | 0.000 | 11.783 | 0.000 |
+| `cc_zone` | -0.0567 | 0.011 | -5.268 | 0.000 |
+| `ports` | 0.0003 | 0.000 | 0.794 | 0.427 |
+| `AI2015` | -0.0005 | 0.000 | -2.757 | 0.006 |
+| `MSOA_pop_density` | 4.6302 | 0.660 | 7.011 | 0.000 |
+
+: Results of the regression model. The height, location, accessibility and the population density are statistically significant. The number of ports per station is insignificant.
+
+![Residual vs. Fitted Plot and the histogram of residuals for the model. The homoscedasticity and the normal distribution of errors can be confirmed.]()
+
+
+
 ### Analysis of subset
 
 #### Subset 1: City of London
 
 We will first consider the analysis on the journeys to and from the City of London.
-
 The correlation matrix for each dependent variable and the independent variable are shown in the figure below.
 
 All coefficients are below 0.8, indicating there is no multicollinearity between dependent variables. The variance inflation factors for each variable do not exceed the threshold of 5, justifying all variables for linear regression. The results of the regression model is as follows:
