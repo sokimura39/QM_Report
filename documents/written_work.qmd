@@ -13,6 +13,7 @@ format:
     mainfont: Spectral
     sansfont: Roboto
     monofont: JetBrainsMono-Regular
+    fontsize: 12pt
     papersize: a4
     geometry:
       - top=20mm
@@ -21,7 +22,7 @@ format:
       - bottom=20mm
       - heightrounded
     toc: false
-    number-sections: false
+    number-sections: true
     colorlinks: true
     highlight-style: github
 jupyter:
@@ -43,7 +44,7 @@ The rapid spread of cycle hire schemes impact the transport system in cities wor
 
 ## Literature Review
 
-The detailed datasets of cycle hire schemes such as LCHS around the world has enabled analysis for cycling behaviour from many aspects. @gebhart2014 has found uncomfortable weather conditions including cold weather, precipitation, and high humidity reduces bikeshare usage in Washington DC. @wood2011 explored the visualisation of journeys taken by the LCHS, illustrating two major patterns of usage: leisure usage often seen near Royal Parks and commuting to and from major train stations in peak hours.
+The detailed datasets of cycle hire schemes such as LCHS around the world has enabled analysis for cycling behaviour from many aspects. @gebhart2014 has found uncomfortable weather conditions including cold weather, precipitation, and high humidity reduces bikeshare usage in Washington DC. @wood2011 explored the visualisation of journeys taken by the LCHS, illustrating two major patterns of usage: leisure usage often seen near Royal Parks and commuting to and from major train stations in peak hours. Accessibility by other public transport modes also impact the usage of bicycle hire schemes [@gebhart2014].
 
 Meanwhile, research on the relationship between cycling behaviour and the physical environment is limited [@heinen2010]. A small number of past researches [@rodriguez2004; @parkin2008] show that hilliness has a negative impact on cycling. The terrain is quantified in different ways, one segmenting the actual routes surveyed, while the other calculates the average percentage of slope using raster data.
 
@@ -51,11 +52,11 @@ Drawing on these two streams, this report has conducted an anlysis on the unexpl
 
 ## Research Question
 
-Is there a correlation between the quantity or duration of cycle hire trips and the slope of the physical environment?
+Does the slope of the physical environment impact the number of cycle hire trips?
 
 ## Hypothesis
 
-There will be less journeys involving uphill routes. This will be measured from two perspectives:
+We hypothesised there will be less journeys under hilly conditions, and tested the following two perspectives:
 
 1. Docking stations located in lower elevations have more arriving journeys than departures, while stations with high elevation being the opposite.
 2. There will be a smaller number of trips for origin-destination pairs requiring uphill travel.
@@ -64,11 +65,23 @@ There will be less journeys involving uphill routes. This will be measured from 
 
 ### Data Sources
 
-We will use the LCHS data that Transport for London (TfL) makes available [@transportforlondon2023a; @transportforlondon2023]. The location of the 800 docking stations is available, along with the name, ID, and the number of docks each station has. The ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by the LCHS is available for analysis.
+The LCHS data published by Transport for London (TfL) is used [@transportforlondon2023a; @transportforlondon2023], which has the following attributes:
 
-The spatial data is joined by the LIDAR Composite Digital Terrain Model (DTM) [@environmentagency2023] with a resolution of 2 m to extract the elevation. Statistical boundaries and congestion charge boundaries used are from the London Datastore [@greaterlondonauthority2014; @greaterlondonauthority2019].
+| Dataset | Attributes |
+|---|---|
+| Docking Station Data | location, name, ID, number of docks per station |
+| Journeys Data | Start and end station data (ID, name), date and time, duration, type of cycle (conventional or e-cycle) | 
 
-Accessibility by other public transport modes also impact the usage of bicycle hire schemes [@gebhart2014]. In London, this is evaluated by an Access Index (AI) published by @transportforlondon2015, which is then categorised into Public Transport Accessibility Levels (PTAL) [@transportforlondon2015a]. An AI of 2.5 or below will be classified as the lowest band (1a), while an index above 40 will be classified as the highest (6b).
+: List of attributes available for LCHS data
+
+The other datasets used for analysis, and a map of docking stations merged with its height are shown below.
+
+| | Elevation Data | Accessibility to Public Transport | Geometries |
+|---|---|---|---|
+| Dataset | LIDAR Composite Digital Terrain Model (DTM) [@environmentagency2023] | Access Index (AI) [@transportforlondon2015] | Statistical boundaries [@greaterlondonauthority2014], Congestion Charge boundaries [@greaterlondonauthority2019] |
+| Specifications | Resolution: 2 m | Basis for the Public Transport Accessibility Levels (PTAL) [@transportforlondon2015a]. $\text{AI}<2.5$ will be lowest PTAL (1a), $\text{AI}>40$ classified as highest (6b) | Downloaded via London Datastore |
+
+: List of datasets used for additional information
 
 ![The location and elevation of docking stations in London](img/docking_stations.png)
 
@@ -86,21 +99,11 @@ The scope of analysis is the journeys taken on the LCHS from December 2022 to No
 
 The negative average in height difference indicate downhill travel is slightly preferred over their uphill counterparts. A one-sample t-test shows this value is significant compared to a mean of 0.
 
-E-cycles have longer distance and smaller difference in height compared to conventional cycles, meaning journeys more physically demanding to the cyclists are taken. This report will attempt to identify the effect of the height difference on the journeys, focusing on journeys made by classic cycles.
+Journeys by e-cycles are longer and have less height difference compared to conventional cycles, suggesting physically demanding journeys are avoided by classic cycle users. Focusing on journeys made by classic cycles, this is the hypothesis we have addressed.
 
 ## Methodology
 
-This research will be conducted in two parts. The first part will consider the usage of individual docking stations, followed by the second part focusing on origin-destination combinations.
-
-### Analyse the usage of individual docking stations
-
-First, we will focus on the usage of individual docks to test the first hypothesis. The number of journeys that originated and terminated at each docking station will be counted, and the ratio of departing journeys compared to the arriving journeys (hereinafter "DA ratio") will be calculated as our target variable. This will be compared to the elevation and other characteristics of the station in a regression model. The other dependent variables are the number of ports per station, whether the station is within the central zone, the AI, and the population density of MSOA the station is located within.
-
-### Summarizing the data into Origin-Destination pairs
-
-In order to conduct a quantitative analysis on the amount of journeys taken by cyclists, we will summarise the data by grouping them by their origin and destination. MSOAs will be used as the unit of analysis in order to reduce the size of the matrix. There are 160 MSOAs where LCHS operates, therefore the summarised dataset includes 25,600 rows of data. By removing journeys that start and finish within the same MSOA, we have 25,440 rows of data for analysis.
-
-A multiple regression model is conducted to differentiate the impacts of height difference from other explanatory variables summarised by @heinen2010. Other potential explanatory variables in this research are as follows:
+This research is conducted in two parts. We have first analysed individual docking stations, followed by an analysis on origin-destination combinations. An extensive literature review by @heinen2010 has summarised factors affecting cycling behaviour, and based on the data availability we have considered the following variables:
 
 - distance of journey (average distance between docking stations)
 - population density of MSOA
@@ -108,15 +111,21 @@ A multiple regression model is conducted to differentiate the impacts of height 
 - number of docking stations in MSOA
 - direction of journey
 
-The characteristics for origin and destination were both considered separately. The direction of journey for the whole dataset will be calculated from the ratio of stations within the central zone. 
+### Analyse the usage of individual docking stations
+
+The ratio of departing journeys compared to arriving journeys (hereinafter "DA ratio") was tested against elevation and other characteristics of the station in a linear regression model. The number of ports per station, the location of station relative to the central zone, the AI, and the population density of MSOA were considered as additional factors.
+
+### Summarizing the data into Origin-Destination pairs
+
+We have summarised the data by grouping them by their origin and destination. MSOAs are used as the unit of analysis in order to reduce the size of the matrix. There are 160 MSOAs where LCHS operates, therefore the summarised dataset includes 25,600 rows of data. By removing journeys that start and finish within the same MSOA, we have 25,440 rows of data for analysis.
 
 #### Analysis of variables
 
-The scatter plot between the distance and the journeys is shown below, along with a log plot and a log-log plot.
+The scatter plot between the distance and the journeys is shown below, along with a semi-log plot and a log-log plot.
 
 ![Correlation of Distance and Number of Journeys between MSOAs](img/scatter_MSOA.png)
 
-The log plot appears to be closest to a linear correlation, while the log-log plot has an upward convex. Thus, the relationship between distance and number of journeys follow an exponential relation. Assuming the other variables have a linear relationship, the model we will use to estimate the number of journeys is as follows:
+The log plot resembles a linear correlation, while the log-log plot has an upward convex. Thus, the relationship between distance and number of journeys follow an exponential relation. Assuming the other variables have a linear relationship, the model we will use to estimate the number of journeys is as follows:
 
 $$
 y = \alpha_\text{dist} \exp(\beta_\text{dist} x_\text{dist}) + \sum_i{\beta_ix_i} + \alpha
@@ -139,7 +148,7 @@ The relationship between the elevation and cycling activities is shown below. Th
 
 ![Relationship between elevation and docking station usage](img/elev_scatter.png)
 
-We will consider the multiple linear regression for the DA ratio. The Pearson's correlation matrix below shows no sign of multicollinearity, and alinear correlation between the independent variable and the dependent variables. 
+We will consider the multiple linear regression for the DA ratio. The Pearson's correlation matrix below shows no sign of multicollinearity, and a linear correlation between the independent variable and the dependent variables. 
 
 ![Pearson's correlation matrix for DA ratio analysis](img/cor_matrix_DA.png)
 
@@ -210,6 +219,6 @@ This research has not considered all factors that may influence cycling behaviou
 
 ## Conclusion
 
-In this research, we have created a dataset of journeys taken by the LCHS, with added information on the elevation and accessibility to public transport for origins and destinations of each journey. The correlation between elevation of individual docking stations and departure-arrival ratio has shown uphill travels have negative impact on cycling behaviour, although this pattern could not be observed when considering the macro-scale origin-destination journey frequency.  The field of studying cycling behaviour through cycle hire data is growing rapidly [@beecham2015], and further research is expected for the better understanding of the effect of the physical environment on cycle hire flows.
+In this research, the correlation between elevation of individual docking stations and departure-arrival ratio has shown uphill travels have negative impact on cycling behaviour, although this pattern could not be observed when considering the macro-scale origin-destination journey frequency.  The field of studying cycling behaviour through cycle hire data is growing rapidly [@beecham2015], and further research is expected for the better understanding of the effect of the physical environment on cycle hire flows.
 
 ## Reference
