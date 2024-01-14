@@ -1,6 +1,6 @@
 ---
 title: Correlation between Cycle Hire Trips and the Terrain
-bibliography: bio.bib
+bibliography: Written_Investigation.bib
 csl: harvard-cite-them-right.csl
 execute: 
   echo: false
@@ -14,10 +14,10 @@ format:
     monofont: JetBrainsMono-Regular
     papersize: a4
     geometry:
-      - top=25mm
-      - left=40mm
-      - right=30mm
-      - bottom=25mm
+      - top=20mm
+      - left=20mm
+      - right=20mm
+      - bottom=20mm
       - heightrounded
     toc: false
     number-sections: false
@@ -25,11 +25,9 @@ format:
     highlight-style: github    
 ---
 
-# QM Written assignment
-
 ## Introduction
 
-Cycle hire schemes are spreading rapidly in cities in the 21st century. This has greatly impacted the transport system in cities, by increasing the share of cycling and public transport usage, lowering greenhouse gas emmisions, and improving public health [@demaio2009]. Since the first implication of the cycle hire scheme in Amsterdam in the 1960s, the system has seen technological and methodological improvements over time. The modern system equipped with electronic self-serve docking stations and integration with technology has enabled users to use cycles between different stations, allowing for casual usages for short, high-frequency and one-way journeys[@beecham2015; @beroud2012].
+Cycle hire schemes are spreading rapidly in cities in the 21st century. This has greatly impacted the transport system in cities, by increasing the share of cycling and public transport usage, lowering greenhouse gas emissions, and improving public health [@demaio2009]. Since the first implication of the cycle hire scheme in Amsterdam in the 1960s, the system has seen technological and methodological improvements over time. The modern system equipped with electronic self-serve docking stations and integration with technology has enabled users to use cycles between different stations, allowing for casual usages for short, high-frequency and one-way journeys[@beecham2015; @beroud2012].
 
 The London Cycle Hire Scheme (LCHS), widely known as the Santander Cycles, is one of these systems. In service since 2010 [@li2019], it has 800 docking stations within central London [@transportforlondon2023a]. Users are charged on a timed basis for one-time usage, or can opt into memberships allowing unlimited rides up to 60 minutes at a time [@transportforlondonb]. 
 
@@ -57,43 +55,29 @@ There will be less journeys involving uphill routes. This will be measured from 
 
 Transport for London (TfL) makes data for the LCHS publicly available. The location of the 800 docking stations is available from the TfL Unified API [@transportforlondon2023a], where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well [@transportforlondon2023], with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by the LCHS.
 
-The spatial data is joined by the physical attributes from other resources to extract the required information. LIDAR Composite Digital Terrain Model (DTM) [@environmentalagency2023] with a resolution of 2 m was used for extracting elevation. Statistical boundaries and congestion charge boundaries used are from the London Datastore [@greaterlondonauthority2014; @greaterlondonauthority2019].
+The spatial data is joined by the physical attributes from other resources to extract the required information. LIDAR Composite Digital Terrain Model (DTM) [@environmentagency2023] with a resolution of 2 m was used for extracting elevation. Statistical boundaries and congestion charge boundaries used are from the London Datastore [@greaterlondonauthority2014; @greaterlondonauthority2019].
 
 Accessibility by other public transport modes also impact the usage of bicycle hire schemes [@gebhart2014]. In London, this is evaluated by an Access Index (AI) published by @transportforlondon2015, which is then categorised into Public Transport Accessibility Levels (PTAL) [@transportforlondon2015a]. An AI of 2.5 or below will be classified as the lowest band (1a), while an index above 40 will be classified as the highest (6b).
+
+![The location and elevation of docking stations in London](img/docking_stations.png)
 
 ### Summary of data
 
 The scope of analysis is the journeys taken on the LCHS from December 2022 to November 2023, the most recent one-year period where data is available. There is a total of 8,414,631 journeys taken during this period. The summary of the data is shown as follows.
 
 | Statistics | Classic Cycles | E-cycles | Total |
-|===|---|---|---|
+|:---|---:|---:|---:|
 | Number of Trips | 7,808,234 | 606,397 | 8,414,631 |
 | Mean Travelled Distance [m] | 2279.41 | 3124.62 | 2340.32 |
 | Mean Height Difference [m] | -0.23 | -0.07 | -0.22 |
 
-: **Table 1**: Characteristics of journeys made by the LCHS 
+: Characteristics of journeys made by the LCHS 
 
-As a whole, the average height difference between the origin and destination is -0.22 metres, a slight negative value indicating downhill travel is slightly preferred over their uphill counterparts. A one-sample t-test shows this value is significant compared to the expected mean of 0.
+The average height difference between the origin and destination is -0.22 metres, indicating downhill travel is slightly preferred over their uphill counterparts. A one-sample t-test shows this value is significant compared to a mean of 0.
 
-Different behaviour can be observed for the classic cycles and e-cycles in terms of distance and height difference. Longer distance and the smaller difference in height infer e-cycles allows journeys more physically demanding to the cyclists. From this comparison between the classic cycles and e-cycles, we believe that the physical intensity of cycling may have a correlation on the journeys taken on the LCHS.
+Different behaviour can be observed for the classic cycles and e-cycles in terms of distance and height difference. Longer distance and the smaller difference in height infer e-cycles allows journeys more physically demanding to the cyclists, which in turn indicates physical intensity of cycling being correlated to the LCHS journeys.
 
-There are many factors that influence the choice of travel mode, and we cannot immediately conclude the height difference is the decisive factor. This report will attempt to identify the effect of the height difference on the journeys. From this point, our focus will be on journeys made by classic cycles.
-
-### Spatial Distribution of Cycling Behaviour
-
-The spatial characteristics (although not the main focus of this report) is an important aspect of cycling behaviour. We will define Central London as the congestion charge zone [@transportforlondon] which is roughly the area within the Ring Road. The following table shows the characteristics of journeys, classified by their relation to the Central London area.
-
-| Origin: | Outside || Inside ||
-| Destination: | Outside | Inside | Outside | Inside |
-|===|---|---|---|---|
-| Number of Trips | 3,788,352	| 1,432,552 | 1,265,977 | 1,927,750 |
-| Mean Travelled Distance [m] | 1972.20 | 3290.51 | 3294.99 | 1730.68 |
-| Mean Height Difference [m] | -0.17 | -0.04 | -0.73 | -0.11 |
-
-: **Table 2**: Number of Journeys made by all cycles in relation with the Congestion Charge Zone
-
-Comparing the journeys that start outside the central area and finish within the central area (hereinafter inbound journeys) to the ones originating at the center and terminating outside (outbound journeys), there are less outbound journeys indicating cycling is not chosen as the mode of transport, despite the fact that outbound journeys tend to be more downhill (larger difference in mean height difference.)
-Although the reason behind this is unknown, this is one parameter we must consider.
+This report will attempt to identify the effect of the height difference on the journeys, focusing on journeys made by classic cycles.
 
 ## Methodology
 
@@ -115,35 +99,30 @@ A multiple regression model is conducted to differentiate the impacts of height 
 - number of docking stations in MSOA
 - direction of journey
 
-When considering the subset using one MSOA as the origin or destination, characteristics for the other end of the journey was stored for regression. Upon analysis for the whole dataset, the characteristics for origin and destination were both used to consider the impact. The direction of journey for the whole dataset will be represented by the ratio of stations within the central zone, due to the fact that some MSOAs stretch through the borders of the central zone defined. 
+The characteristics for origin and destination were both used to consider the impact. The direction of journey for the whole dataset will be represented by the ratio of stations within the central zone, due to the fact that some MSOAs stretch through the borders of the central zone defined. 
 
 #### Analysis of variables
 
-The scatter plots for each of the potential explanatory variables are shown as follows.
+The scatter plot between the distance and the journeys is shown below, along with a log plot and a log-log plot.
 
-The scatter plot suggests the distance may have a power law correlation with the number of journeys. A linear regression on log-log scale returns a coefficient of -2.3, indicating the inverse squared value of distance may have a better correlation with the number of journeys. Assuming other variables have a linear correlation (if any at all), the following model will be used for further analysis.
+![Correlation of Distance and Number of Journeys between MSOAs](img/scatter_MSOA.png)
+
+The log plot appears to be closer to a linear correlation, where as the log-log plot has an upward convex. Thus, the relationship between distance and number of journeys follow an exponential relation. Assuming the other variables have a linear relationship, the model we will use to estimate the number of journeys is as follows:
 
 $$
-y = \frac{\beta_{\text{dist}}}{(x_{\text{dist}})^2} + \sum_i{\beta_ix_i}
+y = \alpha_\text{dist} \exp(\beta_\text{dist} x_\text{dist}) + \sum_i{\beta_ix_i} + \alpha
 $$
+
+whereas
 
 - $x_{\text{dist}}$: distance of journey
+- $\beta_\text{dist}$: coefficient for exponential law (slope of semi-log regression line)
+- $\alpha_\text{dist}$: constant for exponential law (intercept of semi-log regression line)
 - $x_i$: other explanatory variables
-- $\beta$: coefficients
+- $\alpha$: constant for linear regression
+- $\beta_i$: coefficients for linear regression
 
-By storing the inverse squared value of distance (/km^2^) in the `distance_inv_sq` variable, the linear regression model will consist of the following dependent variables.
-
-| Criteria | Variables (subset analysis) | Variables (whole dataset analysis) |
-|===|---|---|
-| independent variable (number of journeys) | `Number` ||
-| distance of journey | `distance_inv_sq` ||
-| population density | `other_pop` | `start_pop` `end_pop` |
-| access to public transport (AI) | `other_AI2015 ` | `start_AI2015` `end_AI2015` |
-| number of stations in MSOA | `other_stations` | `start_stations` `end_stations` |
-| ratio of stations within central zone | - | `start_cc_zone` | `end_cc_zone` |
-| direction of journey | `is_outbound` | - |
-
-: Variables for linear regression analysis
+By considering $\exp(\beta_\text{dist} x_\text{dist})$ as one variable `distance_exp` and $\alpha_\text{dist}$ as its coefficient, the algorithm for a multiple linear regression can be utilised for our proposed model.
 
 ## Results
 
@@ -151,16 +130,16 @@ By storing the inverse squared value of distance (/km^2^) in the `distance_inv_s
 
 The relationship between the elevation and the number of departures, arrivals, and the ratio are shown in the figure below. The DA ratio has a linear correlation with the elevation, and is statistically significant explaining 11.0 % of the variance in the DA ratio.
 
-![Relationship between elevation and docking station usage]()
+![Relationship between elevation and docking station usage](img/elev_scatter.png)
 
 Now, we will consider the multiple linear regression for the DA ratio. The Pearson's correlation matrix below shows no sign of multicollinearity, and some linear correlation between the independent variable and the dependent variables. 
 
-![Pearson's correlation matrix for DA ratio analysis]()
+![Pearson's correlation matrix for DA ratio analysis](img/cor_matrix_DA.png)
 
 The results of the regression model is as follows.
 
 | Variable | Coefficient | Standard Error | $t$ | $P > |t|$ |
-|:===|---:|---:|---:|---:|
+|:---|---:|---:|---:|---:|
 | Constant | 0.9246 | 0.018 | 52.034 | 0.000 |
 | `Height` | 0.0049 | 0.000 | 11.783 | 0.000 |
 | `cc_zone` | -0.0567 | 0.011 | -5.268 | 0.000 |
@@ -172,7 +151,7 @@ The results of the regression model is as follows.
 
 The factors that lead to more departures than arrivals are the elevation and the population density of the area, while locating in the central zone and the accessibility to public transport lead to more arriving journeys. A 1 m rise in elevation leads to a 0.5 % increase in departures compared to arrivals. stations in the highest PTAL band (AI > 40) will have 2 % more arrivals than departures compared to the lowest band (AI < 2.5).
 
-![Residual vs. Fitted Plot and the histogram of residuals for the model. The homoscedasticity and the normal distribution of errors can be confirmed.]()
+![Residual vs. Fitted Plot and the histogram of residuals for the model. The homoscedasticity and the normal distribution of errors can be confirmed.](img/residual_DA.png)
 
 ### Analysis of the origin-destination flow
 
@@ -180,27 +159,27 @@ We have extracted 2 areas as the focus for the linear regression model, and have
 
 The correlation matrix is shown as follows:
 
-![Pearson's correlation matrix for OD analysis]()
+![Pearson's correlation matrix for OD analysis](img/cor_matrix_MSOA.png)
 
 There is a collinearity between the number of stations per area, the accessibility by public transport, and whether the docks are in the central area, although this is below the threshold of 5 for a VIF analysis. The results of the regression model is as follows:
 
 | Variable | Coefficient | Standard Error | $t$ | $P > |t|$ |
-|:===|---:|---:|---:|---:|
-|Constant|-482.8715|30.011|-16.090|0.000|
-|`distance_inv_sq`|817.9024|16.343|50.046|0.000|
-|`height_diff`|-0.4716|0.422|-1.119|0.263|
-|`start_stations`|61.4233|1.621|37.884|0.000|
-|`end_stations`|66.8177|1.621|41.211|0.000|
-|`start_AI2015`|1.0362|0.353|2.933|0.003|
-|`end_AI2015`|1.0950|0.353|3.100|0.002|
-|`start_pop_density`|-0.0009|0.001|-0.831|0.406|
-|`end_pop_density`|-0.0020|0.001|-1.866|0.062|
-|`start_cc_zone`|21.5298|23.612|0.912|0.362|
-|`end_cc_zone`|22.7766|23.612|0.965|0.335|
+|:---|---:|---:|---:|---:|
+|Constant|-552.5421|28.093|-19.668|0.000|
+|`distance_exp`|2.7091|0.034|80.581|0.000|
+|`height_diff`|-0.4716|0.394|-1.196|0.232|
+|`start_stations`|57.9386|1.517|38.186|0.000|
+|`end_stations`|63.3330|1.517|41.741|0.000|
+|`start_AI2015`|0.6236|0.330|1.887|0.059|
+|`end_AI2015`|0.6825|0.330|2.065|0.039|
+|`start_pop_density`|-0.0026|0.001|-2.569|0.010|
+|`end_pop_density`|-0.0037|0.001|-3.675|0.000|
+|`start_cc_zone`|25.3524|22.087|1.148|0.251|
+|`end_cc_zone`|26.5992|22.087|1.204|0.228|
 
-: Results of the regression model. Adjusted R-squared value is $R^2 = 0.283$. The significant variables are the distance, number of stations and the accessibility to public transport. The difference in height, along with the population density and the relationship with the central zone is not a significant factor. Although insignificant, it is worth noting the population density of the end points had lower P-value compared to that of origin.
+: Results of the regression model. Adjusted R-squared value is $R^2 = 0.373$. The significant variables are the distance, number of stations and the population density. The difference in height, along with the relationship with the central zone is not a significant factor. AI of destination is more significant, while AI of origin is statistically insignificant ($p > 0.05$).
 
-The model shows that there will be more travel between MSOAs if the distance between the MSOAs are smaller, there are more stations within each MSOA, or there is high public transport availability.
+The model shows that there will be more travel between MSOAs if the distance between the MSOAs are smaller, there are more stations within each MSOA, or the population density is smaller.
 
 ## Discussion
 
@@ -214,9 +193,10 @@ The second point is that slope may be irrelavant for the overall route selection
 
 ### Other factors influencing frequency
 
-Through this research, other decisive factors affecting cycling behaviour were discovered. Closer distances between areas saw more journeys between them, which aligns with previous literature. The positive correlation between public transport accessibility and cycling behaviour indicate bike-and-ride usage is becoming common practice in London, which merits public transport users by reducing door-to-door travel time [@marten2007]. On a micro-scale, high accessibility to public transport favors more arrivals, which suggests *ride-and-bike* is less frequent than *bike-and-ride*. 
+Through this research, other decisive factors affecting cycling behaviour were discovered. Closer distances between areas saw more journeys between them, which aligns with previous literature. The negative correlation between population density may indicate usage is more frequent in commercial areas than in residential areas.
+The positive correlation between public transport accessibility for the destination and cycling behaviour indicate bike-and-ride usage is becoming common practice in London, which merits public transport users by reducing door-to-door travel time [@martens2007]. With the AI at the origin not being significant, a *ride-and-bike* behaviour seems to be less common than cycling to public transport. 
 
-Interestingly, some factors triggering assymetry among outbound and return trips have been discovered. High population density leads to more departures, while being in the central zone increases arrivals. This may indicate Londoners cycle on their way to the city centre, but use other transport modes on their way back. The reasons, whether it might be the darkness as suggested by @stinton2004, influence of alcohol, or simply not wanting to engage in cycling after a long day, is a potential area for future exploration.
+Interestingly, some factors triggering assymetry among outbound and return trips have been discovered. High population density leads to more departures, while being in the central zone increases arrivals. This may indicate Londoners cycle on their way to the city centre, but use other transport modes on their way back. The reasons, whether it might be the darkness as suggested by @stinson2004, influence of alcohol, or simply not wanting to engage in cycling after a long day, is a potential area for future exploration.
 
 ### Limitations
 

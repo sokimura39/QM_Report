@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Correlation between Cycle Hire Trips and the Terrain</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="written_work_files/libs/clipboard/clipboard.min.js"></script>
+<script src="written_work_files/libs/quarto-html/quarto.js"></script>
+<script src="written_work_files/libs/quarto-html/popper.min.js"></script>
+<script src="written_work_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="written_work_files/libs/quarto-html/anchor.min.js"></script>
+<link href="written_work_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="written_work_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="written_work_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="written_work_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="written_work_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="..\written_work.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Correlation between Cycle Hire Trips and the Terrain</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Cycle hire schemes are spreading rapidly in cities in the 21st century. This has greatly impacted the transport system in cities, by increasing the share of cycling and public transport usage, lowering greenhouse gas emissions, and improving public health <span class="citation" data-cites="demaio2009">(<a href="#ref-demaio2009" role="doc-biblioref">DeMaio, 2009</a>)</span>. Since the first implication of the cycle hire scheme in Amsterdam in the 1960s, the system has seen technological and methodological improvements over time. The modern system equipped with electronic self-serve docking stations and integration with technology has enabled users to use cycles between different stations, allowing for casual usages for short, high-frequency and one-way journeys<span class="citation" data-cites="beecham2015 beroud2012">(<a href="#ref-beroud2012" role="doc-biblioref">Beroud and Anaya, 2012</a>; <a href="#ref-beecham2015" role="doc-biblioref">Beecham, 2015</a>)</span>.</p>
+<p>The London Cycle Hire Scheme (LCHS), widely known as the Santander Cycles, is one of these systems. In service since 2010 <span class="citation" data-cites="li2019">(<a href="#ref-li2019" role="doc-biblioref">Li <em>et al.</em>, 2019</a>)</span>, it has 800 docking stations within central London <span class="citation" data-cites="transportforlondon2023a">(<a href="#ref-transportforlondon2023a" role="doc-biblioref">Transport for London, 2023b</a>)</span>. Users are charged on a timed basis for one-time usage, or can opt into memberships allowing unlimited rides up to 60 minutes at a time <span class="citation" data-cites="transportforlondonb">(<a href="#ref-transportforlondonb" role="doc-biblioref">Transport for London, no date</a>)</span>.</p>
+</section>
+<section id="literature-review" class="level2">
+<h2 class="anchored" data-anchor-id="literature-review">Literature Review</h2>
+<p>The detailed datasets of cycle hire schemes such as LCHS around the world has enabled analysis for cycling behaviour from many aspects. <span class="citation" data-cites="gebhart2014">Gebhart and Noland (<a href="#ref-gebhart2014" role="doc-biblioref">2014</a>)</span> has explored how weather conditions affect the number of bikeshare trips in Washington DC, finding uncomfortable conditions including cold weather, precipitation, and high humidity reduces bikeshare usage. <span class="citation" data-cites="wood2011">Wood, Slingsby and Dykes (<a href="#ref-wood2011" role="doc-biblioref">2011</a>)</span> explored the visualisation of journeys taken by the LCHS, illustrating two major patterns of usage: leisure usage often seen near Royal Parks and commuting to and from major train stations in peak hours.</p>
+<p>Meanwhile, research on the relationship between cycling behaviour and the physical environment is limited <span class="citation" data-cites="heinen2010">(<a href="#ref-heinen2010" role="doc-biblioref">Heinen, Wee and Maat, 2010</a>)</span>. A small number of past researches <span class="citation" data-cites="rodriguez2004 parkin2008">(<a href="#ref-rodriguez2004" role="doc-biblioref">Rodrı́guez and Joo, 2004</a>; <a href="#ref-parkin2008" role="doc-biblioref">Parkin, Wardman and Page, 2008</a>)</span> show that hilliness has a negative impact on cycling. The terrain is quantified in different ways, one segmenting the actual routes surveyed, while the other calculates the average percentage of slope using raster data.</p>
+<p>Drawing on these two streams, this report has conducted an anlysis on the unexplored relationship between cycle hire scheme usage behaviour and the physical environment.</p>
+</section>
+<section id="research-question" class="level2">
+<h2 class="anchored" data-anchor-id="research-question">Research Question</h2>
+<p>Is there a correlation between the quantity or duration of cycle hire trips and the slope of the physical environment?</p>
+</section>
+<section id="hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="hypothesis">Hypothesis</h2>
+<p>There will be less journeys involving uphill routes. This will be measured from two perspectives: 1. Docking stations located in lower elevations have more arriving journeys than departures, while stations with high elevation being the opposite. 2. There will be a smaller number of trips for origin-destination pairs requiring uphill travel.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<section id="data-sources" class="level3">
+<h3 class="anchored" data-anchor-id="data-sources">Data Sources</h3>
+<p>Transport for London (TfL) makes data for the LCHS publicly available. The location of the 800 docking stations is available from the TfL Unified API <span class="citation" data-cites="transportforlondon2023a">(<a href="#ref-transportforlondon2023a" role="doc-biblioref">Transport for London, 2023b</a>)</span>, where real time availability is updated along with the name, ID, and the number of docks each station has. Usage data is shared on their website as well <span class="citation" data-cites="transportforlondon2023">(<a href="#ref-transportforlondon2023" role="doc-biblioref">Transport for London, 2023a</a>)</span>, with the ID and name for start and end stations, date and time, duration, and type of cycle (conventional or e-cycle) for every journey taken by the LCHS.</p>
+<p>The spatial data is joined by the physical attributes from other resources to extract the required information. LIDAR Composite Digital Terrain Model (DTM) <span class="citation" data-cites="environmentalagency2023">(<a href="#ref-environmentalagency2023" role="doc-biblioref"><strong>environmentalagency2023?</strong></a>)</span> with a resolution of 2 m was used for extracting elevation. Statistical boundaries and congestion charge boundaries used are from the London Datastore <span class="citation" data-cites="greaterlondonauthority2014 greaterlondonauthority2019">(<a href="#ref-greaterlondonauthority2014" role="doc-biblioref">Greater London Authority, 2014</a>, <a href="#ref-greaterlondonauthority2019" role="doc-biblioref">2019</a>)</span>.</p>
+<p>Accessibility by other public transport modes also impact the usage of bicycle hire schemes <span class="citation" data-cites="gebhart2014">(<a href="#ref-gebhart2014" role="doc-biblioref">Gebhart and Noland, 2014</a>)</span>. In London, this is evaluated by an Access Index (AI) published by <span class="citation" data-cites="transportforlondon2015">Transport for London (<a href="#ref-transportforlondon2015" role="doc-biblioref">2015b</a>)</span>, which is then categorised into Public Transport Accessibility Levels (PTAL) <span class="citation" data-cites="transportforlondon2015a">(<a href="#ref-transportforlondon2015a" role="doc-biblioref">Transport for London, 2015a</a>)</span>. An AI of 2.5 or below will be classified as the lowest band (1a), while an index above 40 will be classified as the highest (6b).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/docking_stations.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">The location and elevation of docking stations in London</figcaption>
+</figure>
+</div>
+</section>
+<section id="summary-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="summary-of-data">Summary of data</h3>
+<p>The scope of analysis is the journeys taken on the LCHS from December 2022 to November 2023, the most recent one-year period where data is available. There is a total of 8,414,631 journeys taken during this period. The summary of the data is shown as follows.</p>
+<table class="table">
+<caption>Characteristics of journeys made by the LCHS</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Statistics</th>
+<th style="text-align: right;">Classic Cycles</th>
+<th style="text-align: right;">E-cycles</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Number of Trips</td>
+<td style="text-align: right;">7,808,234</td>
+<td style="text-align: right;">606,397</td>
+<td style="text-align: right;">8,414,631</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean Travelled Distance [m]</td>
+<td style="text-align: right;">2279.41</td>
+<td style="text-align: right;">3124.62</td>
+<td style="text-align: right;">2340.32</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean Height Difference [m]</td>
+<td style="text-align: right;">-0.23</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">-0.22</td>
+</tr>
+</tbody>
+</table>
+<p>The average height difference between the origin and destination is -0.22 metres, indicating downhill travel is slightly preferred over their uphill counterparts. A one-sample t-test shows this value is significant compared to a mean of 0.</p>
+<p>Different behaviour can be observed for the classic cycles and e-cycles in terms of distance and height difference. Longer distance and the smaller difference in height infer e-cycles allows journeys more physically demanding to the cyclists, which in turn indicates physical intensity of cycling being correlated to the LCHS journeys.</p>
+<p>This report will attempt to identify the effect of the height difference on the journeys, focusing on journeys made by classic cycles.</p>
+</section>
+</section>
+<section id="methodology" class="level2">
+<h2 class="anchored" data-anchor-id="methodology">Methodology</h2>
+<p>This research will be conducted in two parts, each addressing the two hypotheses proposed. The first part will consider the usage of individual docking stations, followed by the second part focusing on origin-destination combinations.</p>
+<section id="analyse-the-usage-of-individual-docking-stations" class="level3">
+<h3 class="anchored" data-anchor-id="analyse-the-usage-of-individual-docking-stations">Analyse the usage of individual docking stations</h3>
+<p>First, we will focus on the usage of individual docks to test the first hypothesis. The number of journeys that originated and terminated at each docking station will be counted, and the ratio of departing journeys compared to the arriving journeys (hereinafter “DA ratio”) will be calculated as our target variable. This will be compared to the elevation and other characteristics of the station in a regression model. The other dependent variables are the number of ports per station, whether the station is within the central zone, the TfL access index, and the population density of MSOA the station is located within.</p>
+</section>
+<section id="summarizing-the-data-into-origin-destination-pairs" class="level3">
+<h3 class="anchored" data-anchor-id="summarizing-the-data-into-origin-destination-pairs">Summarizing the data into Origin-Destination pairs</h3>
+<p>In order to conduct a quantitative analysis on the amount of journeys taken by cyclists, we will summarise the data by grouping them according to their origin and destination. For this analysis, MSOAs will be used as the unit of analysis in order to reduce the size of the matrix. There are 160 MSOAs where at least one docking station exists, therefore the summarised dataset includes 25,600 rows of data. By removing journeys that start and finish within the same MSOA, we have 25,440 rows of data for analysis.</p>
+<p>A multiple regression model is conducted to differentiate the impacts of height difference from other explanatory variables summarised by <span class="citation" data-cites="heinen2010">Heinen, Wee and Maat (<a href="#ref-heinen2010" role="doc-biblioref">2010</a>)</span>. Other potential explanatory variables in this research are as follows:</p>
+<ul>
+<li>distance of journey (average distance between docking stations)</li>
+<li>population density of MSOA</li>
+<li>access to public transport (average AI value of stations)</li>
+<li>number of docking stations in MSOA</li>
+<li>direction of journey</li>
+</ul>
+<p>The characteristics for origin and destination were both used to consider the impact. The direction of journey for the whole dataset will be represented by the ratio of stations within the central zone, due to the fact that some MSOAs stretch through the borders of the central zone defined.</p>
+<section id="analysis-of-variables" class="level4">
+<h4 class="anchored" data-anchor-id="analysis-of-variables">Analysis of variables</h4>
+<p>The scatter plot between the distance and the journeys is shown below, along with a log plot and a log-log plot.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/scatter_MSOA.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Correlation of Distance and Number of Journeys between MSOAs</figcaption>
+</figure>
+</div>
+<p>The log plot appears to be closer to a linear correlation, where as the log-log plot has an upward convex. Thus, the relationship between distance and number of journeys follow an exponential relation. Assuming the other variables have a linear relationship, the model we will use to estimate the number of journeys is as follows:</p>
+<p><span class="math display">\[
+y = \alpha_\text{dist} \exp(\beta_\text{dist} x_\text{dist}) + \sum_i{\beta_ix_i} + \alpha
+\]</span></p>
+<p>whereas</p>
+<ul>
+<li><span class="math inline">\(x_{\text{dist}}\)</span>: distance of journey</li>
+<li><span class="math inline">\(\beta_\text{dist}\)</span>: coefficient for exponential law (slope of semi-log regression line)</li>
+<li><span class="math inline">\(\alpha_\text{dist}\)</span>: constant for exponential law (intercept of semi-log regression line)</li>
+<li><span class="math inline">\(x_i\)</span>: other explanatory variables</li>
+<li><span class="math inline">\(\alpha\)</span>: constant for linear regression</li>
+<li><span class="math inline">\(\beta_i\)</span>: coefficients for linear regression</li>
+</ul>
+<p>By considering <span class="math inline">\(\exp(\beta_\text{dist} x_\text{dist})\)</span> as one variable <code>distance_exp</code> and <span class="math inline">\(\alpha_\text{dist}\)</span> as its coefficient, the algorithm for a multiple linear regression can be utilised for our proposed model.</p>
+</section>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="analysis-of-individual-points" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-individual-points">Analysis of Individual Points</h3>
+<p>The relationship between the elevation and the number of departures, arrivals, and the ratio are shown in the figure below. The DA ratio has a linear correlation with the elevation, and is statistically significant explaining 11.0 % of the variance in the DA ratio.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/elev_scatter.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Relationship between elevation and docking station usage</figcaption>
+</figure>
+</div>
+<p>Now, we will consider the multiple linear regression for the DA ratio. The Pearson’s correlation matrix below shows no sign of multicollinearity, and some linear correlation between the independent variable and the dependent variables.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/cor_matrix_DA.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Pearson’s correlation matrix for DA ratio analysis</figcaption>
+</figure>
+</div>
+<p>The results of the regression model is as follows.</p>
+<table class="table">
+<caption>Results of the regression model. Adjusted R-squared value: <span class="math inline">\(R^2 = 0.286\)</span>. The height, location, accessibility and the population density are statistically significant, while the number of ports per station is insignificant.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">Standard Error</th>
+<th style="text-align: right;"><span class="math inline">\(t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(P &gt; |t|\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Constant</td>
+<td style="text-align: right;">0.9246</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">52.034</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Height</code></td>
+<td style="text-align: right;">0.0049</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">11.783</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>cc_zone</code></td>
+<td style="text-align: right;">-0.0567</td>
+<td style="text-align: right;">0.011</td>
+<td style="text-align: right;">-5.268</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>ports</code></td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.794</td>
+<td style="text-align: right;">0.427</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>AI2015</code></td>
+<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">-2.757</td>
+<td style="text-align: right;">0.006</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>MSOA_pop_density</code></td>
+<td style="text-align: right;">4.6302</td>
+<td style="text-align: right;">0.660</td>
+<td style="text-align: right;">7.011</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+</tbody>
+</table>
+<p>The factors that lead to more departures than arrivals are the elevation and the population density of the area, while locating in the central zone and the accessibility to public transport lead to more arriving journeys. A 1 m rise in elevation leads to a 0.5 % increase in departures compared to arrivals. stations in the highest PTAL band (AI &gt; 40) will have 2 % more arrivals than departures compared to the lowest band (AI &lt; 2.5).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/residual_DA.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Residual vs.&nbsp;Fitted Plot and the histogram of residuals for the model. The homoscedasticity and the normal distribution of errors can be confirmed.</figcaption>
+</figure>
+</div>
+</section>
+<section id="analysis-of-the-origin-destination-flow" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-the-origin-destination-flow">Analysis of the origin-destination flow</h3>
+<p>We have extracted 2 areas as the focus for the linear regression model, and have seen that the factors explained have some explanatory power when applied to journeys involving particular areas. We will now apply this to the original dataset as a whole.</p>
+<p>The correlation matrix is shown as follows:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/cor_matrix_MSOA.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Pearson’s correlation matrix for OD analysis</figcaption>
+</figure>
+</div>
+<p>There is a collinearity between the number of stations per area, the accessibility by public transport, and whether the docks are in the central area, although this is below the threshold of 5 for a VIF analysis. The results of the regression model is as follows:</p>
+<table class="table">
+<caption>Results of the regression model. Adjusted R-squared value is <span class="math inline">\(R^2 = 0.373\)</span>. The significant variables are the distance, number of stations and the population density. The difference in height, along with the relationship with the central zone is not a significant factor. AI of destination is more significant, while AI of origin is statistically insignificant (<span class="math inline">\(p &gt; 0.05\)</span>).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">Standard Error</th>
+<th style="text-align: right;"><span class="math inline">\(t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(P &gt; |t|\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Constant</td>
+<td style="text-align: right;">-552.5421</td>
+<td style="text-align: right;">28.093</td>
+<td style="text-align: right;">-19.668</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>distance_exp</code></td>
+<td style="text-align: right;">2.7091</td>
+<td style="text-align: right;">0.034</td>
+<td style="text-align: right;">80.581</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>height_diff</code></td>
+<td style="text-align: right;">-0.4716</td>
+<td style="text-align: right;">0.394</td>
+<td style="text-align: right;">-1.196</td>
+<td style="text-align: right;">0.232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>start_stations</code></td>
+<td style="text-align: right;">57.9386</td>
+<td style="text-align: right;">1.517</td>
+<td style="text-align: right;">38.186</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>end_stations</code></td>
+<td style="text-align: right;">63.3330</td>
+<td style="text-align: right;">1.517</td>
+<td style="text-align: right;">41.741</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>start_AI2015</code></td>
+<td style="text-align: right;">0.6236</td>
+<td style="text-align: right;">0.330</td>
+<td style="text-align: right;">1.887</td>
+<td style="text-align: right;">0.059</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>end_AI2015</code></td>
+<td style="text-align: right;">0.6825</td>
+<td style="text-align: right;">0.330</td>
+<td style="text-align: right;">2.065</td>
+<td style="text-align: right;">0.039</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>start_pop_density</code></td>
+<td style="text-align: right;">-0.0026</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">-2.569</td>
+<td style="text-align: right;">0.010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>end_pop_density</code></td>
+<td style="text-align: right;">-0.0037</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">-3.675</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>start_cc_zone</code></td>
+<td style="text-align: right;">25.3524</td>
+<td style="text-align: right;">22.087</td>
+<td style="text-align: right;">1.148</td>
+<td style="text-align: right;">0.251</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>end_cc_zone</code></td>
+<td style="text-align: right;">26.5992</td>
+<td style="text-align: right;">22.087</td>
+<td style="text-align: right;">1.204</td>
+<td style="text-align: right;">0.228</td>
+</tr>
+</tbody>
+</table>
+<p>The model shows that there will be more travel between MSOAs if the distance between the MSOAs are smaller, there are more stations within each MSOA, or the population density is smaller.</p>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<section id="the-impact-of-elevation" class="level3">
+<h3 class="anchored" data-anchor-id="the-impact-of-elevation">The impact of elevation</h3>
+<p>From the results, we can conclude that there is some relationship between elevation and LCHS journeys. With focus on the individual stations, stations located in elevated areas see more departures than arrivals, which aligns with previous research and empirical observations where an uphill journey has a negative impact on cycling. On the other hand, the frequency of travel between MSOAs are not impacted by the relative difference in their height.</p>
+<p>The first point of discussion is that the relative difference in height may not be a good representation of hilliness that negatively impacts cycling, presenting a limitation of this research. Hills encountered en route, the steepness of slope, and the overall hilliness of the terrain are not considered, which the methodology to quantify and the correlation with frequency are both potential fields of further research.</p>
+<p>The second point is that slope may be irrelavant for the overall route selection. London is a flat city with over 75 % of the stations are located within a 20-metre range in elevation, the small difference may not be significant enough to alter mode choice in the macro scale. The difference observed in the scale of individual ports may be caused by choice within the area, where cyclists prefer departing from high stations but return at nearby stations with lower elevation. Further analysis, considering intra-MSOA differences should be conducted to confirm.</p>
+</section>
+<section id="other-factors-influencing-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="other-factors-influencing-frequency">Other factors influencing frequency</h3>
+<p>Through this research, other decisive factors affecting cycling behaviour were discovered. Closer distances between areas saw more journeys between them, which aligns with previous literature. The negative correlation between population density may indicate usage is more frequent in commercial areas than in residential areas. The positive correlation between public transport accessibility for the destination and cycling behaviour indicate bike-and-ride usage is becoming common practice in London, which merits public transport users by reducing door-to-door travel time <span class="citation" data-cites="martens2007">(<a href="#ref-martens2007" role="doc-biblioref">Martens, 2007</a>)</span>. With the AI at the origin not being significant, a <em>ride-and-bike</em> behaviour seems to be less common than cycling to public transport.</p>
+<p>Interestingly, some factors triggering assymetry among outbound and return trips have been discovered. High population density leads to more departures, while being in the central zone increases arrivals. This may indicate Londoners cycle on their way to the city centre, but use other transport modes on their way back. The reasons, whether it might be the darkness as suggested by <span class="citation" data-cites="stinson2004">Stinson and Bhat (<a href="#ref-stinson2004" role="doc-biblioref">2004</a>)</span>, influence of alcohol, or simply not wanting to engage in cycling after a long day, is a potential area for future exploration.</p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<p>This research has not considered all factors that may influence cycling behaviour, such as socio-economic factors, infrastructure, and weather. The variables may be proxies of the actual dominant conditions, in which case my discussions may be drawing incorrect conclusions. The journeys by classic cycles on LCHS may not be the representation of the cycling behaviour in London as a whole, which does not take into consideration private cycles, e-scooters, and other bicycle hire schemes.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In this research, we have created a dataset of journeys taken by the LCHS, with added information on the elevation and accessibility to public transport for origins and destinations of each journey. The correlation between elevation of individual docking stations and departure-arrival ratio has shown uphill travels have negative impact on cycling behaviour, although this pattern could not be observed when considering the macro-scale origin-destination journey frequency. The field of studying cycling behaviour through cycle hire data is growing rapidly <span class="citation" data-cites="beecham2015">(<a href="#ref-beecham2015" role="doc-biblioref">Beecham, 2015</a>)</span>, and further research is expected for the better understanding of the effect of the physical environment on cycle hire flows.</p>
+</section>
+<section id="reference" class="level2 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Reference</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-beecham2015" class="csl-entry" role="listitem">
+Beecham, R. (2015) <span>“Using <span>Bikeshare</span> <span>Datasets</span> to <span>Improve</span> <span>Urban</span> <span>Cycling</span> <span>Experience</span> and <span>Research</span> <span>Urban</span> <span>Cycling</span> <span>Behaviour</span>,”</span> in Gerike, R. and Parkin, J. (eds.). Farnham: Ashgate, pp. 267–283. Available at: <a href="https://www.crcpress.com/Cycling-Futures-From-Research-into-Practice/Gerike-Parkin/p/book/9781138546868">https://www.crcpress.com/Cycling-Futures-From-Research-into-Practice/Gerike-Parkin/p/book/9781138546868</a> (Accessed: November 30, 2023).
+</div>
+<div id="ref-beroud2012" class="csl-entry" role="listitem">
+Beroud, B. and Anaya, E. (2012) <span>“Private <span>Interventions</span> in a <span>Public</span> <span>Service</span>: <span>An</span> <span>Analysis</span> of <span>Public</span> <span>Bicycle</span> <span>Schemes</span>,”</span> in Parkin, J. (ed.) <em>Cycling and <span>Sustainability</span></em>. Emerald Group Publishing Limited (Transport and <span>Sustainability</span>), pp. 269–301. doi: <a href="https://doi.org/10.1108/S2044-9941(2012)0000001013">10.1108/S2044-9941(2012)0000001013</a>.
+</div>
+<div id="ref-demaio2009" class="csl-entry" role="listitem">
+DeMaio, P. (2009) <span>“Bike-sharing: <span>History</span>, <span>Impacts</span>, <span>Models</span> of <span>Provision</span>, and <span>Future</span>,”</span> <em>Journal of Public Transportation</em>, 12(4), pp. 41–56. doi: <a href="https://doi.org/10.5038/2375-0901.12.4.3">10.5038/2375-0901.12.4.3</a>.
+</div>
+<div id="ref-gebhart2014" class="csl-entry" role="listitem">
+Gebhart, K. and Noland, R. B. (2014) <span>“The impact of weather conditions on bikeshare trips in <span>Washington</span>, <span>DC</span>,”</span> <em>Transportation</em>, 41(6), pp. 1205–1225. doi: <a href="https://doi.org/10.1007/s11116-014-9540-7">10.1007/s11116-014-9540-7</a>.
+</div>
+<div id="ref-greaterlondonauthority2014" class="csl-entry" role="listitem">
+Greater London Authority (2014) <span>“Statistical <span>GIS</span> <span>Boundary</span> <span>Files</span> for <span>London</span> - <span>London</span> <span>Datastore</span>.”</span> Available at: <a href="https://data.london.gov.uk/dataset/statistical-gis-boundary-files-london">https://data.london.gov.uk/dataset/statistical-gis-boundary-files-london</a> (Accessed: January 5, 2024).
+</div>
+<div id="ref-greaterlondonauthority2019" class="csl-entry" role="listitem">
+Greater London Authority (2019) <span>“Ultra <span>Low</span> <span>Emissions</span> <span>Zone</span> 2019 - <span>London</span> <span>Datastore</span>.”</span> Available at: <a href="https://data.london.gov.uk/dataset/ultra_low_emissions_zone">https://data.london.gov.uk/dataset/ultra_low_emissions_zone</a> (Accessed: January 5, 2024).
+</div>
+<div id="ref-heinen2010" class="csl-entry" role="listitem">
+Heinen, E., Wee, B. van and Maat, K. (2010) <span>“Commuting by <span>Bicycle</span>: <span>An</span> <span>Overview</span> of the <span>Literature</span>,”</span> <em>Transport Reviews</em>, 30(1), pp. 59–96. doi: <a href="https://doi.org/10.1080/01441640903187001">10.1080/01441640903187001</a>.
+</div>
+<div id="ref-li2019" class="csl-entry" role="listitem">
+Li, H. <em>et al.</em> (2019) <span>“Effects of dockless bike-sharing systems on the usage of the <span>London</span> <span>Cycle</span> <span>Hire</span>,”</span> <em>Transportation Research Part A: Policy and Practice</em>, 130, pp. 398–411. doi: <a href="https://doi.org/10.1016/j.tra.2019.09.050">10.1016/j.tra.2019.09.050</a>.
+</div>
+<div id="ref-martens2007" class="csl-entry" role="listitem">
+Martens, K. (2007) <span>“Promoting bike-and-ride: <span>The</span> <span>Dutch</span> experience,”</span> <em>Transportation Research Part A: Policy and Practice</em>, 41(4), pp. 326–338. doi: <a href="https://doi.org/10.1016/j.tra.2006.09.010">10.1016/j.tra.2006.09.010</a>.
+</div>
+<div id="ref-parkin2008" class="csl-entry" role="listitem">
+Parkin, J., Wardman, M. and Page, M. (2008) <span>“Estimation of the determinants of bicycle mode share for the journey to work using census data,”</span> <em>Transportation</em>, 35(1), pp. 93–109. doi: <a href="https://doi.org/10.1007/s11116-007-9137-5">10.1007/s11116-007-9137-5</a>.
+</div>
+<div id="ref-rodriguez2004" class="csl-entry" role="listitem">
+Rodrı́guez, D. A. and Joo, J. (2004) <span>“The relationship between non-motorized mode choice and the local physical environment,”</span> <em>Transportation Research Part D: Transport and Environment</em>, 9(2), pp. 151–173. doi: <a href="https://doi.org/10.1016/j.trd.2003.11.001">10.1016/j.trd.2003.11.001</a>.
+</div>
+<div id="ref-stinson2004" class="csl-entry" role="listitem">
+Stinson, M. A. and Bhat, C. R. (2004) <span>“Frequency of <span>Bicycle</span> <span>Commuting</span>: <span>Internet</span>-<span>Based</span> <span>Survey</span> <span>Analysis</span>,”</span> <em>Transportation Research Record</em>, 1878(1), pp. 122–130. doi: <a href="https://doi.org/10.3141/1878-15">10.3141/1878-15</a>.
+</div>
+<div id="ref-transportforlondon2015a" class="csl-entry" role="listitem">
+Transport for London (2015a) <span>“Assessing transport connectivity in <span>London</span>.”</span> Available at: <a href="https://tfl.gov.uk/cdn/static/cms/documents/connectivity-assessment-guide.pdf">https://tfl.gov.uk/cdn/static/cms/documents/connectivity-assessment-guide.pdf</a> (Accessed: January 11, 2024).
+</div>
+<div id="ref-transportforlondon2015" class="csl-entry" role="listitem">
+Transport for London (2015b) <span>“Public <span>Transport</span> <span>Accessibility</span> <span>Levels</span> - <span>London</span> <span>Datastore</span>.”</span> Available at: <a href="https://data.london.gov.uk/dataset/public-transport-accessibility-levels">https://data.london.gov.uk/dataset/public-transport-accessibility-levels</a> (Accessed: January 11, 2024).
+</div>
+<div id="ref-transportforlondon2023" class="csl-entry" role="listitem">
+Transport for London (2023a) <span>“<span>TfL</span> <span>Cycling</span> <span>Data</span>.”</span> Available at: <a href="https://cycling.data.tfl.gov.uk/">https://cycling.data.tfl.gov.uk/</a> (Accessed: December 3, 2023).
+</div>
+<div id="ref-transportforlondon2023a" class="csl-entry" role="listitem">
+Transport for London (2023b) <span>“Transport for <span>London</span> <span>Unified</span> <span>API</span>.”</span> Available at: <a href="https://api.tfl.gov.uk/BikePoint">https://api.tfl.gov.uk/BikePoint</a> (Accessed: December 29, 2023).
+</div>
+<div id="ref-transportforlondonb" class="csl-entry" role="listitem">
+Transport for London (no date) <span>“Santander <span>Cycles</span>,”</span> <em>Transport for London</em>. Available at: <a href="https://www.tfl.gov.uk/modes/cycling/santander-cycles">https://www.tfl.gov.uk/modes/cycling/santander-cycles</a> (Accessed: January 13, 2024).
+</div>
+<div id="ref-wood2011" class="csl-entry" role="listitem">
+Wood, J., Slingsby, A. and Dykes, J. (2011) <span>“Visualizing the <span>Dynamics</span> of <span>London</span>’s <span>Bicycle</span>-<span>Hire</span> <span>Scheme</span>,”</span> <em>Cartographica: The International Journal for Geographic Information and Geovisualization</em>, 46(4), pp. 239–251. doi: <a href="https://doi.org/10.3138/carto.46.4.239">10.3138/carto.46.4.239</a>.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -4,7 +4,7 @@
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
-  letterpaper,
+  a4paper,
   DIV=11,
   numbers=noendperiod]{scrartcl}
 
@@ -22,6 +22,9 @@
 \usepackage{lmodern}
 \ifPDFTeX\else  
     % xetex/luatex font selection
+  \setmainfont[]{Spectral}
+  \setsansfont[]{Roboto}
+  \setmonofont[]{JetBrainsMono-Regular}
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -40,6 +43,7 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\usepackage[top=20mm,left=20mm,right=20mm,bottom=20mm,heightrounded]{geometry}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 % Make \paragraph and \subparagraph free-standing
@@ -77,7 +81,31 @@
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
+\addtokomafont{disposition}{\rmfamily}
 \KOMAoption{captions}{tableheading}
 \makeatletter
 \makeatother
@@ -153,43 +181,52 @@
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, interior hidden, enhanced, sharp corners, boxrule=0pt, frame hidden, breakable]}{\end{tcolorbox}}\fi
-
-\hypertarget{qm-written-assignment}{%
-\section{QM Written assignment}\label{qm-written-assignment}}
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, breakable, borderline west={3pt}{0pt}{shadecolor}, interior hidden, sharp corners, frame hidden, boxrule=0pt]}{\end{tcolorbox}}\fi
 
 \hypertarget{introduction}{%
 \subsection{Introduction}\label{introduction}}
 
-The London Cycle Hire Scheme (LCHS), known as Santander Cycles, is a
-dock-based bike share scheme that operates in London since 2010
-(\textbf{li2019?}), now having 800 docking stations within central
-London (\textbf{transportforlondon2023a?}). Users can use the bikes for
-journeys between docking stations, allowing for casual usage of bicycles
-for short, high-frequency, and one-way journeys (\textbf{beecham2015?};
-\textbf{beroud2012?}). The usage data is publicly available, enabling
-analysis of cycling behaviour.
+Cycle hire schemes are spreading rapidly in cities in the 21st century.
+This has greatly impacted the transport system in cities, by increasing
+the share of cycling and public transport usage, lowering greenhouse gas
+emissions, and improving public health (DeMaio, 2009). Since the first
+implication of the cycle hire scheme in Amsterdam in the 1960s, the
+system has seen technological and methodological improvements over time.
+The modern system equipped with electronic self-serve docking stations
+and integration with technology has enabled users to use cycles between
+different stations, allowing for casual usages for short, high-frequency
+and one-way journeys(Beroud and Anaya, 2012; Beecham, 2015).
+
+The London Cycle Hire Scheme (LCHS), widely known as the Santander
+Cycles, is one of these systems. In service since 2010 (Li \emph{et
+al.}, 2019), it has 800 docking stations within central London
+(Transport for London, 2023b). Users are charged on a timed basis for
+one-time usage, or can opt into memberships allowing unlimited rides up
+to 60 minutes at a time (Transport for London, no date).
 
 \hypertarget{literature-review}{%
 \subsection{Literature Review}\label{literature-review}}
 
-The detailed datasets of cycle hire schemes around the world has enabled
-analysis for cycling behaviour from many aspects.
-(\textbf{gebhart2014?}) has explored how weather conditions affect the
+The detailed datasets of cycle hire schemes such as LCHS around the
+world has enabled analysis for cycling behaviour from many aspects.
+Gebhart and Noland (2014) has explored how weather conditions affect the
 number of bikeshare trips in Washington DC, finding uncomfortable
 conditions including cold weather, precipitation, and high humidity
-reduces bikeshare usage.
+reduces bikeshare usage. Wood, Slingsby and Dykes (2011) explored the
+visualisation of journeys taken by the LCHS, illustrating two major
+patterns of usage: leisure usage often seen near Royal Parks and
+commuting to and from major train stations in peak hours.
 
-Research on the relationship between cycling behaviour and the physical
-environment is limited. (\textbf{rodriguez2004?}) explored the impacts
-of the physical environment such as the topography and the existence of
-sidewalks and bike paths to modal choices, and have found that a
-positive slope (uphill) reduces the odds of walking or cycling. This
-research surveyed the students and staff at a university, which may show
-a different behaviour from the general public.
+Meanwhile, research on the relationship between cycling behaviour and
+the physical environment is limited (Heinen, Wee and Maat, 2010). A
+small number of past researches (Rodrı́guez and Joo, 2004; Parkin,
+Wardman and Page, 2008) show that hilliness has a negative impact on
+cycling. The terrain is quantified in different ways, one segmenting the
+actual routes surveyed, while the other calculates the average
+percentage of slope using raster data.
 
 Drawing on these two streams, this report has conducted an anlysis on
-the less-explored relationship between cycle hire scheme usage behaviour
+the unexplored relationship between cycle hire scheme usage behaviour
 and the physical environment.
 
 \hypertarget{research-question}{%
@@ -201,11 +238,11 @@ trips and the slope of the physical environment?
 \hypertarget{hypothesis}{%
 \subsection{Hypothesis}\label{hypothesis}}
 
-The trips involving uphill paths will be discouraged, thus leading to a
-smaller number of trips done by the cycle hire scheme.For the trips that
-do occur, the duration will be significantly longer compared to their
-downhill counterparts. Journeys made by ebikes are less disencouraged by
-uphills compared to classic bikes.
+There will be less journeys involving uphill routes. This will be
+measured from two perspectives: 1. Docking stations located in lower
+elevations have more arriving journeys than departures, while stations
+with high elevation being the opposite. 2. There will be a smaller
+number of trips for origin-destination pairs requiring uphill travel.
 
 \hypertarget{data}{%
 \subsection{Data}\label{data}}
@@ -215,20 +252,37 @@ uphills compared to classic bikes.
 
 Transport for London (TfL) makes data for the LCHS publicly available.
 The location of the 800 docking stations is available from the TfL
-Unified API (\textbf{transportforlondon2023a?}), where real time
-availability is updated along with the name, ID, and the number of docks
-each station has. Usage data is shared on their website as well
-(\textbf{transportforlondon2023?}), with the ID and name for start and
-end stations, date and time, duration, and type of cycle (conventional
-or e-cycle) for every journey taken by the LCHS.
+Unified API (Transport for London, 2023b), where real time availability
+is updated along with the name, ID, and the number of docks each station
+has. Usage data is shared on their website as well (Transport for
+London, 2023a), with the ID and name for start and end stations, date
+and time, duration, and type of cycle (conventional or e-cycle) for
+every journey taken by the LCHS.
 
 The spatial data is joined by the physical attributes from other
 resources to extract the required information. LIDAR Composite Digital
 Terrain Model (DTM) (\textbf{environmentalagency2023?}) with a
 resolution of 2 m was used for extracting elevation. Statistical
 boundaries and congestion charge boundaries used are from the London
-Datastore (\textbf{greaterlondonauthority2014?};
-\textbf{greaterlondonauthority2019?}).
+Datastore (Greater London Authority, 2014, 2019).
+
+Accessibility by other public transport modes also impact the usage of
+bicycle hire schemes (Gebhart and Noland, 2014). In London, this is
+evaluated by an Access Index (AI) published by Transport for London
+(2015b), which is then categorised into Public Transport Accessibility
+Levels (PTAL) (Transport for London, 2015a). An AI of 2.5 or below will
+be classified as the lowest band (1a), while an index above 40 will be
+classified as the highest (6b).
+
+\begin{figure}
+
+{\centering \includegraphics{img/docking_stations.png}
+
+}
+
+\caption{The location and elevation of docking stations in London}
+
+\end{figure}
 
 \hypertarget{summary-of-data}{%
 \subsubsection{Summary of data}\label{summary-of-data}}
@@ -236,106 +290,492 @@ Datastore (\textbf{greaterlondonauthority2014?};
 The scope of analysis is the journeys taken on the LCHS from December
 2022 to November 2023, the most recent one-year period where data is
 available. There is a total of 8,414,631 journeys taken during this
-period, of which .
+period. The summary of the data is shown as follows.
 
-The summary of the data is shown as follows.
+\begin{longtable}[]{@{}lrrr@{}}
+\caption{Characteristics of journeys made by the LCHS}\tabularnewline
+\toprule\noalign{}
+Statistics & Classic Cycles & E-cycles & Total \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Statistics & Classic Cycles & E-cycles & Total \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Number of Trips & 7,808,234 & 606,397 & 8,414,631 \\
+Mean Travelled Distance {[}m{]} & 2279.41 & 3124.62 & 2340.32 \\
+Mean Height Difference {[}m{]} & -0.23 & -0.07 & -0.22 \\
+\end{longtable}
 
-Statistics \textbar{} Classic Cycles \textbar{} E-cycles \textbar{}
-Total \textbar{}
+The average height difference between the origin and destination is
+-0.22 metres, indicating downhill travel is slightly preferred over
+their uphill counterparts. A one-sample t-test shows this value is
+significant compared to a mean of 0.
 
-\textbar===\textbar---\textbar---\textbar---\textbar{} \textbar{} Number
-of Trips \textbar{} 7,808,234 \textbar{} 606,397 \textbar{} 8,414,631
-\textbar{} \textbar{} Mean Travelled Distance {[}m{]} \textbar{} 2279.41
-\textbar{} 3124.62 \textbar{} 2340.32 \textbar{} \textbar{} Mean Height
-Difference {[}m{]} \textbar{} -0.23 \textbar{} -0.07 \textbar{} -0.22
-\textbar{}
+Different behaviour can be observed for the classic cycles and e-cycles
+in terms of distance and height difference. Longer distance and the
+smaller difference in height infer e-cycles allows journeys more
+physically demanding to the cyclists, which in turn indicates physical
+intensity of cycling being correlated to the LCHS journeys.
 
-As a whole, the average height difference between the origin and
-destination is -0.22 metres, a slight negative value indicating downhill
-travel is slightly preferred over their uphill counterparts. Different
-behaviour can be observed for the classic cycles and e-cycles in terms
-of distance and height difference. Longer distance and the smaller
-difference in height infer e-cycles allows journeys more physically
-demanding to the cyclists. From this comparison between the classic
-cycles and e-cycles, we believe that the physical intensity of cycling
-may have a correlation on the journeys taken on the LCHS.
-
-There are many factors that influence the choice of travel mode, and we
-cannot immediately conclude the height difference is the decisive
-factor. This report will attempt to identify the effect of the height
-difference on the journeys. From this point, our focus will be on
-journeys made by classic cycles, which
-
-\hypertarget{spatial-distribution-of-cycling-behaviour}{%
-\subsubsection{Spatial Distribution of Cycling
-Behaviour}\label{spatial-distribution-of-cycling-behaviour}}
-
-The spatial characteristics (although not the main focus of this report)
-is an important aspect of cycling behaviour. We will define Central
-London as the congestion charge zone (\textbf{transportforlondon?})
-which is roughly the area within the Ring Road. The following table
-shows the characteristics of journeys, classified by their relation to
-the Central London area.
-
-\textbar{} Outside \textbar\textbar{} Inside \textbar\textbar{}\\
-\textbar{} Outside \textbar{} Inside \textbar{} Outside \textbar{}
-Inside \textbar{}
-
-\textbar===\textbar---\textbar---\textbar---\textbar---\textbar{}
-\textbar{} Number of Trips \textbar{} 3,788,352 \textbar{} 1,432,552
-\textbar{} 1,265,977 \textbar{} 1,927,750 \textbar{} \textbar{} Mean
-Travelled Distance {[}m{]} \textbar{} 1972.20 \textbar{} 3290.51
-\textbar{} 3294.99 \textbar{} 1730.68 \textbar{} \textbar{} Mean Height
-Difference {[}m{]} \textbar{} -0.17 \textbar{} -0.04 \textbar{} -0.73
-\textbar{} -0.11 \textbar{}
+This report will attempt to identify the effect of the height difference
+on the journeys, focusing on journeys made by classic cycles.
 
 \hypertarget{methodology}{%
 \subsection{Methodology}\label{methodology}}
 
-\hypertarget{joining-and-cleaning-data}{%
-\subsubsection{Joining and Cleaning
-Data}\label{joining-and-cleaning-data}}
+This research will be conducted in two parts, each addressing the two
+hypotheses proposed. The first part will consider the usage of
+individual docking stations, followed by the second part focusing on
+origin-destination combinations.
 
-Using these datasets, we have conducted a spatial join to get the
-elevation and the LSOA of each docking station, and classified whether
-the station is within the congestion charge area. This docking station
-dataset with the additional information is joined with the usage data,
-allowing us to calculate the distance, the difference in height, and the
-origin-destination combination for LSOAs. The average height difference
-for e-bikes were -0.07 m, significantly (\(p < 0.01\)) lower than that
-of e-bikes.
+\hypertarget{analyse-the-usage-of-individual-docking-stations}{%
+\subsubsection{Analyse the usage of individual docking
+stations}\label{analyse-the-usage-of-individual-docking-stations}}
 
-\hypertarget{the-impacts-of-height-difference}{%
-\subsubsection{The impacts of height
-difference}\label{the-impacts-of-height-difference}}
+First, we will focus on the usage of individual docks to test the first
+hypothesis. The number of journeys that originated and terminated at
+each docking station will be counted, and the ratio of departing
+journeys compared to the arriving journeys (hereinafter ``DA ratio'')
+will be calculated as our target variable. This will be compared to the
+elevation and other characteristics of the station in a regression
+model. The other dependent variables are the number of ports per
+station, whether the station is within the central zone, the TfL access
+index, and the population density of MSOA the station is located within.
 
-First, we will consider whether there is a correlation between the
-height difference travelled and the number of journeys. The descriptive
-statistics of these will be as follows:
+\hypertarget{summarizing-the-data-into-origin-destination-pairs}{%
+\subsubsection{Summarizing the data into Origin-Destination
+pairs}\label{summarizing-the-data-into-origin-destination-pairs}}
 
-The negative number in the difference in height indicates that downhill
-travel is more encouraged as a general trend. The one-sample t-test
-against the null hypothesis of average being 0 shows a p-value of
-\(p < 0.001\), showing this is statistically significant. Both
-conventional cycles and e-bikes have negative average height difference,
-with e-bikes having less average showing
+In order to conduct a quantitative analysis on the amount of journeys
+taken by cyclists, we will summarise the data by grouping them according
+to their origin and destination. For this analysis, MSOAs will be used
+as the unit of analysis in order to reduce the size of the matrix. There
+are 160 MSOAs where at least one docking station exists, therefore the
+summarised dataset includes 25,600 rows of data. By removing journeys
+that start and finish within the same MSOA, we have 25,440 rows of data
+for analysis.
 
-\hypertarget{regression-model}{%
-\subsubsection{Regression Model}\label{regression-model}}
+A multiple regression model is conducted to differentiate the impacts of
+height difference from other explanatory variables summarised by Heinen,
+Wee and Maat (2010). Other potential explanatory variables in this
+research are as follows:
 
-In order to analyse the impact of the height difference, a multiple
-regression model is conducted to measure the impacts of this variable.
+\begin{itemize}
+\tightlist
+\item
+  distance of journey (average distance between docking stations)
+\item
+  population density of MSOA
+\item
+  access to public transport (average AI value of stations)
+\item
+  number of docking stations in MSOA
+\item
+  direction of journey
+\end{itemize}
+
+The characteristics for origin and destination were both used to
+consider the impact. The direction of journey for the whole dataset will
+be represented by the ratio of stations within the central zone, due to
+the fact that some MSOAs stretch through the borders of the central zone
+defined.
+
+\hypertarget{analysis-of-variables}{%
+\paragraph{Analysis of variables}\label{analysis-of-variables}}
+
+The scatter plot between the distance and the journeys is shown below,
+along with a log plot and a log-log plot.
+
+\begin{figure}
+
+{\centering \includegraphics{img/scatter_MSOA.png}
+
+}
+
+\caption{Correlation of Distance and Number of Journeys between MSOAs}
+
+\end{figure}
+
+The log plot appears to be closer to a linear correlation, where as the
+log-log plot has an upward convex. Thus, the relationship between
+distance and number of journeys follow an exponential relation. Assuming
+the other variables have a linear relationship, the model we will use to
+estimate the number of journeys is as follows:
+
+\[
+y = \alpha_\text{dist} \exp(\beta_\text{dist} x_\text{dist}) + \sum_i{\beta_ix_i} + \alpha
+\]
+
+whereas
+
+\begin{itemize}
+\tightlist
+\item
+  \(x_{\text{dist}}\): distance of journey
+\item
+  \(\beta_\text{dist}\): coefficient for exponential law (slope of
+  semi-log regression line)
+\item
+  \(\alpha_\text{dist}\): constant for exponential law (intercept of
+  semi-log regression line)
+\item
+  \(x_i\): other explanatory variables
+\item
+  \(\alpha\): constant for linear regression
+\item
+  \(\beta_i\): coefficients for linear regression
+\end{itemize}
+
+By considering \(\exp(\beta_\text{dist} x_\text{dist})\) as one variable
+\texttt{distance\_exp} and \(\alpha_\text{dist}\) as its coefficient,
+the algorithm for a multiple linear regression can be utilised for our
+proposed model.
 
 \hypertarget{results}{%
 \subsection{Results}\label{results}}
 
-The results for the simple regression model is as follows:
+\hypertarget{analysis-of-individual-points}{%
+\subsubsection{Analysis of Individual
+Points}\label{analysis-of-individual-points}}
+
+The relationship between the elevation and the number of departures,
+arrivals, and the ratio are shown in the figure below. The DA ratio has
+a linear correlation with the elevation, and is statistically
+significant explaining 11.0 \% of the variance in the DA ratio.
+
+\begin{figure}
+
+{\centering \includegraphics{img/elev_scatter.png}
+
+}
+
+\caption{Relationship between elevation and docking station usage}
+
+\end{figure}
+
+Now, we will consider the multiple linear regression for the DA ratio.
+The Pearson's correlation matrix below shows no sign of
+multicollinearity, and some linear correlation between the independent
+variable and the dependent variables.
+
+\begin{figure}
+
+{\centering \includegraphics{img/cor_matrix_DA.png}
+
+}
+
+\caption{Pearson's correlation matrix for DA ratio analysis}
+
+\end{figure}
+
+The results of the regression model is as follows.
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\caption{Results of the regression model. Adjusted R-squared value:
+\(R^2 = 0.286\). The height, location, accessibility and the population
+density are statistically significant, while the number of ports per
+station is insignificant.}\tabularnewline
+\toprule\noalign{}
+Variable & Coefficient & Standard Error & \(t\) & \(P > |t|\) \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Variable & Coefficient & Standard Error & \(t\) & \(P > |t|\) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Constant & 0.9246 & 0.018 & 52.034 & 0.000 \\
+\texttt{Height} & 0.0049 & 0.000 & 11.783 & 0.000 \\
+\texttt{cc\_zone} & -0.0567 & 0.011 & -5.268 & 0.000 \\
+\texttt{ports} & 0.0003 & 0.000 & 0.794 & 0.427 \\
+\texttt{AI2015} & -0.0005 & 0.000 & -2.757 & 0.006 \\
+\texttt{MSOA\_pop\_density} & 4.6302 & 0.660 & 7.011 & 0.000 \\
+\end{longtable}
+
+The factors that lead to more departures than arrivals are the elevation
+and the population density of the area, while locating in the central
+zone and the accessibility to public transport lead to more arriving
+journeys. A 1 m rise in elevation leads to a 0.5 \% increase in
+departures compared to arrivals. stations in the highest PTAL band (AI
+\textgreater{} 40) will have 2 \% more arrivals than departures compared
+to the lowest band (AI \textless{} 2.5).
+
+\begin{figure}
+
+{\centering \includegraphics{img/residual_DA.png}
+
+}
+
+\caption{Residual vs.~Fitted Plot and the histogram of residuals for the
+model. The homoscedasticity and the normal distribution of errors can be
+confirmed.}
+
+\end{figure}
+
+\hypertarget{analysis-of-the-origin-destination-flow}{%
+\subsubsection{Analysis of the origin-destination
+flow}\label{analysis-of-the-origin-destination-flow}}
+
+We have extracted 2 areas as the focus for the linear regression model,
+and have seen that the factors explained have some explanatory power
+when applied to journeys involving particular areas. We will now apply
+this to the original dataset as a whole.
+
+The correlation matrix is shown as follows:
+
+\begin{figure}
+
+{\centering \includegraphics{img/cor_matrix_MSOA.png}
+
+}
+
+\caption{Pearson's correlation matrix for OD analysis}
+
+\end{figure}
+
+There is a collinearity between the number of stations per area, the
+accessibility by public transport, and whether the docks are in the
+central area, although this is below the threshold of 5 for a VIF
+analysis. The results of the regression model is as follows:
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\caption{Results of the regression model. Adjusted R-squared value is
+\(R^2 = 0.373\). The significant variables are the distance, number of
+stations and the population density. The difference in height, along
+with the relationship with the central zone is not a significant factor.
+AI of destination is more significant, while AI of origin is
+statistically insignificant (\(p > 0.05\)).}\tabularnewline
+\toprule\noalign{}
+Variable & Coefficient & Standard Error & \(t\) & \(P > |t|\) \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Variable & Coefficient & Standard Error & \(t\) & \(P > |t|\) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Constant & -552.5421 & 28.093 & -19.668 & 0.000 \\
+\texttt{distance\_exp} & 2.7091 & 0.034 & 80.581 & 0.000 \\
+\texttt{height\_diff} & -0.4716 & 0.394 & -1.196 & 0.232 \\
+\texttt{start\_stations} & 57.9386 & 1.517 & 38.186 & 0.000 \\
+\texttt{end\_stations} & 63.3330 & 1.517 & 41.741 & 0.000 \\
+\texttt{start\_AI2015} & 0.6236 & 0.330 & 1.887 & 0.059 \\
+\texttt{end\_AI2015} & 0.6825 & 0.330 & 2.065 & 0.039 \\
+\texttt{start\_pop\_density} & -0.0026 & 0.001 & -2.569 & 0.010 \\
+\texttt{end\_pop\_density} & -0.0037 & 0.001 & -3.675 & 0.000 \\
+\texttt{start\_cc\_zone} & 25.3524 & 22.087 & 1.148 & 0.251 \\
+\texttt{end\_cc\_zone} & 26.5992 & 22.087 & 1.204 & 0.228 \\
+\end{longtable}
+
+The model shows that there will be more travel between MSOAs if the
+distance between the MSOAs are smaller, there are more stations within
+each MSOA, or the population density is smaller.
 
 \hypertarget{discussion}{%
 \subsection{Discussion}\label{discussion}}
 
+\hypertarget{the-impact-of-elevation}{%
+\subsubsection{The impact of elevation}\label{the-impact-of-elevation}}
+
+From the results, we can conclude that there is some relationship
+between elevation and LCHS journeys. With focus on the individual
+stations, stations located in elevated areas see more departures than
+arrivals, which aligns with previous research and empirical observations
+where an uphill journey has a negative impact on cycling. On the other
+hand, the frequency of travel between MSOAs are not impacted by the
+relative difference in their height.
+
+The first point of discussion is that the relative difference in height
+may not be a good representation of hilliness that negatively impacts
+cycling, presenting a limitation of this research. Hills encountered en
+route, the steepness of slope, and the overall hilliness of the terrain
+are not considered, which the methodology to quantify and the
+correlation with frequency are both potential fields of further
+research.
+
+The second point is that slope may be irrelavant for the overall route
+selection. London is a flat city with over 75 \% of the stations are
+located within a 20-metre range in elevation, the small difference may
+not be significant enough to alter mode choice in the macro scale. The
+difference observed in the scale of individual ports may be caused by
+choice within the area, where cyclists prefer departing from high
+stations but return at nearby stations with lower elevation. Further
+analysis, considering intra-MSOA differences should be conducted to
+confirm.
+
+\hypertarget{other-factors-influencing-frequency}{%
+\subsubsection{Other factors influencing
+frequency}\label{other-factors-influencing-frequency}}
+
+Through this research, other decisive factors affecting cycling
+behaviour were discovered. Closer distances between areas saw more
+journeys between them, which aligns with previous literature. The
+negative correlation between population density may indicate usage is
+more frequent in commercial areas than in residential areas. The
+positive correlation between public transport accessibility for the
+destination and cycling behaviour indicate bike-and-ride usage is
+becoming common practice in London, which merits public transport users
+by reducing door-to-door travel time (Martens, 2007). With the AI at the
+origin not being significant, a \emph{ride-and-bike} behaviour seems to
+be less common than cycling to public transport.
+
+Interestingly, some factors triggering assymetry among outbound and
+return trips have been discovered. High population density leads to more
+departures, while being in the central zone increases arrivals. This may
+indicate Londoners cycle on their way to the city centre, but use other
+transport modes on their way back. The reasons, whether it might be the
+darkness as suggested by Stinson and Bhat (2004), influence of alcohol,
+or simply not wanting to engage in cycling after a long day, is a
+potential area for future exploration.
+
+\hypertarget{limitations}{%
+\subsubsection{Limitations}\label{limitations}}
+
+This research has not considered all factors that may influence cycling
+behaviour, such as socio-economic factors, infrastructure, and weather.
+The variables may be proxies of the actual dominant conditions, in which
+case my discussions may be drawing incorrect conclusions. The journeys
+by classic cycles on LCHS may not be the representation of the cycling
+behaviour in London as a whole, which does not take into consideration
+private cycles, e-scooters, and other bicycle hire schemes.
+
 \hypertarget{conclusion}{%
 \subsection{Conclusion}\label{conclusion}}
+
+In this research, we have created a dataset of journeys taken by the
+LCHS, with added information on the elevation and accessibility to
+public transport for origins and destinations of each journey. The
+correlation between elevation of individual docking stations and
+departure-arrival ratio has shown uphill travels have negative impact on
+cycling behaviour, although this pattern could not be observed when
+considering the macro-scale origin-destination journey frequency. The
+field of studying cycling behaviour through cycle hire data is growing
+rapidly (Beecham, 2015), and further research is expected for the better
+understanding of the effect of the physical environment on cycle hire
+flows.
+
+\hypertarget{reference}{%
+\subsection*{Reference}\label{reference}}
+\addcontentsline{toc}{subsection}{Reference}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{0}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-beecham2015}{}}%
+Beecham, R. (2015) {`Using {Bikeshare} {Datasets} to {Improve} {Urban}
+{Cycling} {Experience} and {Research} {Urban} {Cycling} {Behaviour}'},
+in Gerike, R. and Parkin, J. (eds). Farnham: Ashgate, pp. 267--283.
+Available at:
+\url{https://www.crcpress.com/Cycling-Futures-From-Research-into-Practice/Gerike-Parkin/p/book/9781138546868}
+(Accessed: 30 November 2023).
+
+\leavevmode\vadjust pre{\hypertarget{ref-beroud2012}{}}%
+Beroud, B. and Anaya, E. (2012) {`Private {Interventions} in a {Public}
+{Service}: {An} {Analysis} of {Public} {Bicycle} {Schemes}'}, in Parkin,
+J. (ed.) \emph{Cycling and {Sustainability}}. Emerald Group Publishing
+Limited (Transport and {Sustainability}), pp. 269--301. doi:
+\href{https://doi.org/10.1108/S2044-9941(2012)0000001013}{10.1108/S2044-9941(2012)0000001013}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-demaio2009}{}}%
+DeMaio, P. (2009) {`Bike-sharing: {History}, {Impacts}, {Models} of
+{Provision}, and {Future}'}, \emph{Journal of Public Transportation},
+12(4), pp. 41--56. doi:
+\href{https://doi.org/10.5038/2375-0901.12.4.3}{10.5038/2375-0901.12.4.3}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-gebhart2014}{}}%
+Gebhart, K. and Noland, R. B. (2014) {`The impact of weather conditions
+on bikeshare trips in {Washington}, {DC}'}, \emph{Transportation},
+41(6), pp. 1205--1225. doi:
+\href{https://doi.org/10.1007/s11116-014-9540-7}{10.1007/s11116-014-9540-7}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-greaterlondonauthority2014}{}}%
+Greater London Authority (2014) {`Statistical {GIS} {Boundary} {Files}
+for {London} - {London} {Datastore}'}. Available at:
+\url{https://data.london.gov.uk/dataset/statistical-gis-boundary-files-london}
+(Accessed: 5 January 2024).
+
+\leavevmode\vadjust pre{\hypertarget{ref-greaterlondonauthority2019}{}}%
+Greater London Authority (2019) {`Ultra {Low} {Emissions} {Zone} 2019 -
+{London} {Datastore}'}. Available at:
+\url{https://data.london.gov.uk/dataset/ultra_low_emissions_zone}
+(Accessed: 5 January 2024).
+
+\leavevmode\vadjust pre{\hypertarget{ref-heinen2010}{}}%
+Heinen, E., Wee, B. van and Maat, K. (2010) {`Commuting by {Bicycle}:
+{An} {Overview} of the {Literature}'}, \emph{Transport Reviews}, 30(1),
+pp. 59--96. doi:
+\href{https://doi.org/10.1080/01441640903187001}{10.1080/01441640903187001}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-li2019}{}}%
+Li, H. \emph{et al.} (2019) {`Effects of dockless bike-sharing systems
+on the usage of the {London} {Cycle} {Hire}'}, \emph{Transportation
+Research Part A: Policy and Practice}, 130, pp. 398--411. doi:
+\href{https://doi.org/10.1016/j.tra.2019.09.050}{10.1016/j.tra.2019.09.050}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-martens2007}{}}%
+Martens, K. (2007) {`Promoting bike-and-ride: {The} {Dutch}
+experience'}, \emph{Transportation Research Part A: Policy and
+Practice}, 41(4), pp. 326--338. doi:
+\href{https://doi.org/10.1016/j.tra.2006.09.010}{10.1016/j.tra.2006.09.010}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-parkin2008}{}}%
+Parkin, J., Wardman, M. and Page, M. (2008) {`Estimation of the
+determinants of bicycle mode share for the journey to work using census
+data'}, \emph{Transportation}, 35(1), pp. 93--109. doi:
+\href{https://doi.org/10.1007/s11116-007-9137-5}{10.1007/s11116-007-9137-5}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-rodriguez2004}{}}%
+Rodrı́guez, D. A. and Joo, J. (2004) {`The relationship between
+non-motorized mode choice and the local physical environment'},
+\emph{Transportation Research Part D: Transport and Environment}, 9(2),
+pp. 151--173. doi:
+\href{https://doi.org/10.1016/j.trd.2003.11.001}{10.1016/j.trd.2003.11.001}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-stinson2004}{}}%
+Stinson, M. A. and Bhat, C. R. (2004) {`Frequency of {Bicycle}
+{Commuting}: {Internet}-{Based} {Survey} {Analysis}'},
+\emph{Transportation Research Record}, 1878(1), pp. 122--130. doi:
+\href{https://doi.org/10.3141/1878-15}{10.3141/1878-15}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-transportforlondon2015a}{}}%
+Transport for London (2015a) {`Assessing transport connectivity in
+{London}'}. Available at:
+\url{https://tfl.gov.uk/cdn/static/cms/documents/connectivity-assessment-guide.pdf}
+(Accessed: 11 January 2024).
+
+\leavevmode\vadjust pre{\hypertarget{ref-transportforlondon2015}{}}%
+Transport for London (2015b) {`Public {Transport} {Accessibility}
+{Levels} - {London} {Datastore}'}. Available at:
+\url{https://data.london.gov.uk/dataset/public-transport-accessibility-levels}
+(Accessed: 11 January 2024).
+
+\leavevmode\vadjust pre{\hypertarget{ref-transportforlondon2023}{}}%
+Transport for London (2023a) {`{TfL} {Cycling} {Data}'}. Available at:
+\url{https://cycling.data.tfl.gov.uk/} (Accessed: 3 December 2023).
+
+\leavevmode\vadjust pre{\hypertarget{ref-transportforlondon2023a}{}}%
+Transport for London (2023b) {`Transport for {London} {Unified} {API}'}.
+Available at: \url{https://api.tfl.gov.uk/BikePoint} (Accessed: 29
+December 2023).
+
+\leavevmode\vadjust pre{\hypertarget{ref-transportforlondonb}{}}%
+Transport for London (no date) {`Santander {Cycles}'}, \emph{Transport
+for London}. Available at:
+\url{https://www.tfl.gov.uk/modes/cycling/santander-cycles} (Accessed:
+13 January 2024).
+
+\leavevmode\vadjust pre{\hypertarget{ref-wood2011}{}}%
+Wood, J., Slingsby, A. and Dykes, J. (2011) {`Visualizing the {Dynamics}
+of {London}'s {Bicycle}-{Hire} {Scheme}'}, \emph{Cartographica: The
+International Journal for Geographic Information and Geovisualization},
+46(4), pp. 239--251. doi:
+\href{https://doi.org/10.3138/carto.46.4.239}{10.3138/carto.46.4.239}.
+
+\end{CSLReferences}
 
 
 
