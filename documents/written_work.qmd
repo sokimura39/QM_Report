@@ -1,8 +1,9 @@
 ---
 title: Correlation between Cycle Hire Trips and the Terrain
+author: Soki Kimura
 bibliography: Written_Investigation.bib
 csl: harvard-cite-them-right.csl
-execute: 
+execute:
   echo: false
 format:
   pdf:
@@ -22,7 +23,18 @@ format:
     toc: false
     number-sections: false
     colorlinks: true
-    highlight-style: github    
+    highlight-style: github
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.15.2
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
 ---
 
 ## Introduction
@@ -46,6 +58,7 @@ Is there a correlation between the quantity or duration of cycle hire trips and 
 ## Hypothesis
 
 There will be less journeys involving uphill routes. This will be measured from two perspectives:
+
 1. Docking stations located in lower elevations have more arriving journeys than departures, while stations with high elevation being the opposite.
 2. There will be a smaller number of trips for origin-destination pairs requiring uphill travel.
 
@@ -207,5 +220,3 @@ This research has not considered all factors that may influence cycling behaviou
 In this research, we have created a dataset of journeys taken by the LCHS, with added information on the elevation and accessibility to public transport for origins and destinations of each journey. The correlation between elevation of individual docking stations and departure-arrival ratio has shown uphill travels have negative impact on cycling behaviour, although this pattern could not be observed when considering the macro-scale origin-destination journey frequency.  The field of studying cycling behaviour through cycle hire data is growing rapidly [@beecham2015], and further research is expected for the better understanding of the effect of the physical environment on cycle hire flows.
 
 ## Reference
-
-
