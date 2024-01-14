@@ -99,7 +99,7 @@ The negative average in height difference indicate downhill travel is slightly p
 
 ## Methodology
 
-This research is conducted in two parts. We have first analysed individual docking stations, followed by an analysis on origin-destination combinations. An extensive literature review by @heinen2010 has summarised factors affecting cycling behaviour, and based on the data availability we have considered the following variables:
+This research is conducted in two parts. We have first analysed individual docking stations, followed by an analysis on origin-destination combinations. The threshold for the p-value is $p<0.05$. An extensive literature review by @heinen2010 has summarised factors affecting cycling behaviour, and based on the data availability we have considered the following variables:
 
 - distance of journey (average distance between docking stations)
 - population density of MSOA
@@ -113,28 +113,28 @@ The ratio of departing journeys compared to arrivals (hereinafter "DA ratio") wa
 
 ### Summarising the data into Origin-Destination pairs
 
-We have summarised the data by grouping them by their origin and destination, classified by MSOA. There are 160 MSOAs where LCHS operates, therefore the summarised dataset includes 25,600 rows of data. By removing journeys that start and finish within the same MSOA, we have 25,440 rows of data for analysis.
+We have grouped the data by origin and destination, classified by MSOA. There are 160 MSOAs where LCHS operates, therefore the summarised dataset includes 25,600 rows of data. By removing journeys that start and finish within the same MSOA, we have 25,440 rows of data for analysis.
 
 #### Analysis of variables
 
-The scatter plot between the distance and the journeys is shown in @fig-scatter-MSOA, along with a semi-log plot and a log-log plot.
+The scatter plot between distance and the number of journeys is shown in @fig-scatter-MSOA, on a linear, semi-log and a log-log scale.
 
 ![Correlation of Distance and Number of Journeys between MSOAs](img/scatter_MSOA.png){#fig-scatter-MSOA}
 
 The semi-log plot resembles a linear correlation, while the log-log plot has an upward convex. Thus, the relationship between distance and number of journeys follow an exponential relation. The model we will use to estimate the number of journeys is as follows:
 
 $$
-y = \alpha_\text{dist} \exp(\beta_\text{dist} x_\text{dist}) + \sum_i{\beta_ix_i} + \alpha
+y = \exp(\alpha_\text{dist}) \cdot \exp(\beta_\text{dist} x_\text{dist}) + \sum_i{\beta_ix_i} + \alpha
 $$
 
 - $x_{\text{dist}}$: distance of journey
-- $\beta_\text{dist}$: coefficient for exponential law (slope of semi-log regression line)
+- $\beta_\text{dist}(=-0.00056)$: coefficient for exponential law (slope of semi-log regression line)
 - $\alpha_\text{dist}$: constant for exponential law (intercept of semi-log regression line)
 - $x_i$: other explanatory variables
 - $\alpha$: constant for linear regression
 - $\beta_i$: coefficients for linear regression
 
-By considering $\exp(\beta_\text{dist} x_\text{dist})$ as one new variable `distance_exp` and $\alpha_\text{dist}$ as its coefficient, the algorithm for a multiple linear regression can be utilised for our proposed model.
+By considering $\exp(\beta_\text{dist} x_\text{dist})$ as one new variable `distance_exp` and $\exp(\alpha_\text{dist})$ as its coefficient, the algorithm for a multiple linear regression can be utilised for our proposed model.
 
 ## Results
 
@@ -157,11 +157,11 @@ The results of the regression model is as follows. There was no multicollinearit
 
 : Results of the regression model. Adjusted R-squared value: $R^2 = 0.286$. The height, location, accessibility and the population density are statistically significant, while the number of ports per station is insignificant.
 
-The factors that lead to more departures than arrivals are the elevation and the population density of the area, while locating in the central zone and the accessibility to public transport lead to more arriving journeys. A 1 m rise in elevation leads to a 0.5 % increase in departures compared to arrivals. stations in the highest PTAL band (AI > 40) will have 2 % more arrivals than departures compared to the lowest band (AI < 2.5). We have confirmed the homoscedasticity and normal distribution of errors is being fulfilled.
+The factors that lead to more departures than arrivals are the elevation and the population density of the area, while locating in the central zone and the accessibility to public transport lead to more arrivals. A 1 m rise in elevation leads to a 0.5 % increase in departures compared to arrivals. stations in the highest PTAL band (AI > 40) will have 2 % more arrivals than departures compared to the lowest band (AI < 2.5). We have confirmed the homoscedasticity and normal distribution of errors is being fulfilled.
 
 ### Analysis of the origin-destination flow
 
-Now, we will analyse the flow of cycles using an origin-destination analysis. The results of the regression model is as follows. No variables have shown multicollinearity using VIF analysis.
+Now, we will analyse the flow of cycles using an origin-destination analysis. The result of the regression model is as follows. No variables showed multicollinearity using VIF analysis.
 
 | Variable | Coefficient | Standard Error | $t$ | $P > |t|$ |
 |:---|---:|---:|---:|---:|
@@ -185,33 +185,33 @@ The model shows that there will be more travel between MSOAs if the distance bet
 
 ### The impact of elevation
 
-From the results, we can conclude that there is some relationship between elevation and LCHS journeys. With focus on the individual stations, stations located in elevated areas see more departures than arrivals, which aligns with previous research and empirical observations where an uphill journey has a negative impact on cycling. On the other hand, the frequency of travel between MSOAs are not impacted by the relative difference in their height. 
+From these results, we can conclude that there is some relationship between elevation and LCHS journeys. With focus on individual stations, stations located in elevated areas see more departures than arrivals, which aligns with previous research and empirical observations where an uphill journey has a negative impact on cycling. On the other hand, the frequency of travel between MSOAs are not impacted by the relative difference in their height. 
 
 The first point of discussion is that the relative height difference may not be representing hilliness that negatively impacts cycling, presenting a limitation of this research. Hills encountered en route, the steepness of slope, and the general hilliness of the terrain are not considered, which the methodology to quantify and the correlation with frequency are both potential fields of further research. 
 
-The second possibility is that slope may be irrelavant for the overall route selection. London is a flat city with over 75 % of the stations located between 0-20 m in elevation, and the small difference may not be enough to alter mode choice in the macro scale. The difference observed in the scale of individual ports may be caused by choice within the area, where cyclists prefer departing from high stations but return at nearby stations with lower elevation. Further analysis, considering intra-MSOA differences should be conducted to confirm.
+A second possibility is that slope may be irrelavant for the overall route selection. London is a flat city with over 75 % of the stations located between 0-20 m in elevation, and the small difference may not be enough to alter mode choice in the macro scale. The difference observed in the scale of individual ports may be caused by choice within the area, where cyclists prefer departing from high stations but return at nearby stations with lower elevation. Further analysis, considering intra-MSOA differences should be conducted to confirm.
 
 ### Other factors influencing frequency
 
-Other decisive factors affecting cycling behaviour were discovered. Closer distances between areas saw more journeys between them, which aligns with previous literature. The negative correlation between population density may indicate usage is more frequent outside residential areas. Parks and open spaces are places where cycling is frequent [@wood2011], which may have impact. 
+Other decisive factors affecting cycling behaviour were discovered. Closer distances between areas saw more journeys between them, which aligns with previous literature. The negative correlation between population density is counterintuitive, but one explanation can be related to frequent leisure cycling in parks and open spaces [@wood2011]. 
 
-An interesting factorThe positive correlation between public transport accessibility for the destination and cycling behaviour indicate bike-and-ride usage [@martens2007] is becoming common. With the AI at the origin not being significant, a *ride-and-bike* behaviour seems to be less common than cycling to public transport. 
-
-Interestingly, some factors triggering assymetry among outbound and return trips have been discovered. The High population density leads to more departures, while being in the central zone increases arrivals. This may indicate Londoners cycle on their way to the city centre, but use other transport modes on their way back. The reasons, whether it might be the darkness as suggested by @stinson2004, influence of alcohol, or simply not wanting to engage in cycling after a long day, is a potential area for future exploration.
+An interesting relationship can be observed in relation to public transport, where accessibility to the origin is not as statistically significant as the accessibility to the destination. The positive correlation itself indicate bike-and-ride usages [@martens2007] combining public transport and cycle share is a common behaviour. Considering the assymetry between origin and destination, a *ride-and-bike* behaviour of cycling from public transport may be less common than cycling to ride. 
 
 ### Limitations
 
-This research has not considered all factors that may influence cycling behaviour, such as socio-economic factors, infrastructure, and weather. Nearby facilities may influence behaviour, such as parks, stations and places of interest. The variables may be proxies of the actual dominant conditions, in which case my discussions may be drawing incorrect conclusions. The journeys by classic cycles on LCHS may not be the representation of the cycling behaviour in London as a whole, which does not take into consideration private cycles, e-scooters, and other bicycle hire schemes. 
+This research has not considered all factors that may influence cycling behaviour, such as socio-economic factors, infrastructure, time, and weather. Nearby facilities may influence behaviour, such as parks, stations and places of interest. The variables may be proxies of the actual dominant conditions, in which case my discussions may be drawing incorrect conclusions. The journeys by classic cycles on LCHS may not be the representation of the cycling behaviour in London as a whole, which does not take into consideration private cycles, e-scooters, and other bicycle hire schemes. 
+
+Potential future research can focus on the difference in behaviour on outbound and return trips. The nature of cycle hire schemes allows one-way cycling journeys, which is not a practical option for private-owned bicycles. The assymetrical dataset indicates some traits of one-way usage, which may lead to a further understanding of cycling behaviour in cities.
 
 ## Conclusion
 
 In this research, the correlation between elevation of individual docking stations and departure-arrival ratio was explored, suggesting uphills have negative impact on cycling behaviour. On the other hand, this was not a significant factor to the macro-scale origin-destination journey frequency.  The field of studying cycling behaviour through cycle hire data is growing rapidly [@beecham2015], and further research is expected for the better understanding of the effect of the physical environment on cycle hire flows.
 
+-----
 
 The analysis is available on <https://github.com/sokimura39/QM_Report>
 
-
-Word Count: 1,750
+**Word Count: 1,750**
 
 
 {{< pagebreak >}}
