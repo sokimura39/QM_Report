@@ -1,6 +1,6 @@
 # QM_report
 
-Working repository for CASA0007 written investigation assignment. The submitted report can be found [here](documents/written_work.html).
+Working repository for CASA0007 written investigation assignment. The submitted report can be found [here](documents/written_work.pdf).
 
 ## Structure of code
 
